@@ -1,0 +1,9 @@
+{
+  "currency": "USD",
+  "source": "https://aws.amazon.com/cloudwatch/pricing/",
+  "date": "2026-11-09",
+  "region": "us-east-1",
+  "standard_storage_per_gb_month": "0.03",
+  "infrequent_access_storage_per_gb_month": "0.03",
+  "delivery_storage_per_gb_month": "0.03"
+}

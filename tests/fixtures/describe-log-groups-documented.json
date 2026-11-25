@@ -1,0 +1,45 @@
+{
+  "logGroups": [
+    {
+      "arn": "arn:aws:logs:us-east-1:123456789012:log-group:/aws/lambda/checkout:*",
+      "creationTime": 1762646400000,
+      "dataProtectionStatus": "ACTIVATED",
+      "inheritedProperties": ["ACCOUNT_DATA_PROTECTION"],
+      "kmsKeyId": "arn:aws:kms:us-east-1:123456789012:key/1234abcd-12ab-34cd-56ef-1234567890ab",
+      "logGroupArn": "arn:aws:logs:us-east-1:123456789012:log-group:/aws/lambda/checkout",
+      "logGroupClass": "STANDARD",
+      "logGroupName": "/aws/lambda/checkout",
+      "metricFilterCount": 2,
+      "retentionInDays": 30,
+      "storedBytes": 107374182400
+    },
+    {
+      "logGroupName": "/aws/ecs/app-service_v2.0#blue",
+      "storedBytes": 21474836480
+    },
+    {
+      "arn": "arn:aws:logs:us-east-1:123456789012:log-group:/aws/rds/instance/db-1/error",
+      "creationTime": 1759622400000,
+      "dataProtectionStatus": "DISABLED",
+      "inheritedProperties": [],
+      "logGroupArn": "arn:aws:logs:us-east-1:123456789012:log-group:/aws/rds/instance/db-1/error:*",
+      "logGroupClass": "INFREQUENT_ACCESS",
+      "logGroupName": "/aws/rds/instance/db-1/error",
+      "metricFilterCount": 0,
+      "retentionInDays": 365,
+      "storedBytes": 10737418240
+    },
+    {
+      "logGroupClass": "DELIVERY",
+      "logGroupName": "/aws/delivery/flow",
+      "storedBytes": 0
+    },
+    {
+      "creationTime": 1793318400000,
+      "inheritedProperties": ["ACCOUNT_DATA_PROTECTION"],
+      "logGroupName": "/aws/lambda/worker",
+      "metricFilterCount": 0,
+      "storedBytes": 5368709120
+    }
+  ]
+}

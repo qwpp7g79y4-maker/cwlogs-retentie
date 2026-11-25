@@ -1,0 +1,29 @@
+{
+  "logGroups": [
+    {
+      "logGroupName": "/aws/lambda/checkout",
+      "creationTime": 1762646400000,
+      "storedBytes": 391915765760,
+      "metricFilterCount": 0,
+      "arn": "arn:aws:logs:us-east-1:123456789012:log-group:/aws/lambda/checkout",
+      "logGroupClass": "STANDARD"
+    },
+    {
+      "logGroupName": "/aws/lambda/billing",
+      "creationTime": 1759622400000,
+      "retentionInDays": 14,
+      "storedBytes": 15032385536,
+      "metricFilterCount": 1,
+      "arn": "arn:aws:logs:us-east-1:123456789012:log-group:/aws/lambda/billing",
+      "logGroupClass": "STANDARD"
+    },
+    {
+      "logGroupName": "/aws/ecs/worker",
+      "creationTime": 1793318400000,
+      "storedBytes": 10737418240,
+      "metricFilterCount": 0,
+      "arn": "arn:aws:logs:us-east-1:123456789012:log-group:/aws/ecs/worker",
+      "logGroupClass": "INFREQUENT_ACCESS"
+    }
+  ]
+}

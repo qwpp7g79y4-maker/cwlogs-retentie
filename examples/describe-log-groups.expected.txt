@@ -1,0 +1,19 @@
+prices: USD, source https://aws.amazon.com/cloudwatch/pricing/, date 2026-11-09, region us-east-1
+as-of: 2026-11-09
+free tier not applied: pricing examples waive the first 5 GB of archived logs per month for the account, and this export is not the whole account
+not priced: ingestion, Logs Insights, Live Tail, data-protection scanning, and vended delivery tiers. Only archived storage of the stored bytes is priced.
+Estimate from list prices, not your AWS invoice (free tier, credits, discounts not included)
+
+log_group             class              retention  age_days  stored_bytes   gb  estimated_usd_month  save_30_usd  save_90_usd  save_365_usd
+/aws/ecs/worker       INFREQUENT_ACCESS       none        10   10737418240   10                 0.30         0.00         0.00          0.00
+/aws/lambda/billing   STANDARD                  14       400   15032385536   14                 0.42         0.00         0.00          0.00
+/aws/lambda/checkout  STANDARD                none       365  391915765760  365                10.95        10.05         8.25          0.00
+total                                                         417685569536  389                11.67        10.05         8.25          0.00
+
+advice /aws/ecs/worker: no retention; 30 days saves 0.00 USD/month if ingest stays flat. Not executed: aws logs put-retention-policy --log-group-name='/aws/ecs/worker' --retention-in-days 30
+advice /aws/ecs/worker: no retention; 90 days saves 0.00 USD/month if ingest stays flat. Not executed: aws logs put-retention-policy --log-group-name='/aws/ecs/worker' --retention-in-days 90
+advice /aws/ecs/worker: no retention; 365 days saves 0.00 USD/month if ingest stays flat. Not executed: aws logs put-retention-policy --log-group-name='/aws/ecs/worker' --retention-in-days 365
+advice /aws/lambda/checkout: no retention; 30 days saves 10.05 USD/month if ingest stays flat. Not executed: aws logs put-retention-policy --log-group-name='/aws/lambda/checkout' --retention-in-days 30
+advice /aws/lambda/checkout: no retention; 90 days saves 8.25 USD/month if ingest stays flat. Not executed: aws logs put-retention-policy --log-group-name='/aws/lambda/checkout' --retention-in-days 90
+advice /aws/lambda/checkout: no retention; 365 days saves 0.00 USD/month if ingest stays flat. Not executed: aws logs put-retention-policy --log-group-name='/aws/lambda/checkout' --retention-in-days 365
+note: savings assume steady ingest and that stored bytes are the logs still kept. A shorter retention also deletes logs you cannot get back. This is not a forecast. The command is not executed.

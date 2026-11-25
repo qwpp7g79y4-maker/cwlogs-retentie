@@ -1,0 +1,202 @@
+.TH CWLOGS-RETENTIE 1 "2026-11-19" "cwlogs-retentie 1.0.0" "User Commands"
+.SH NAME
+cwlogs-retentie \- price CloudWatch Logs storage from describe-log-groups JSON
+.SH SYNOPSIS
+.nf
+Estimate CloudWatch Logs storage cost from describe-log-groups JSON. Reads files only, no network.
+
+Usage: cwlogs-retentie [OPTIONS] <FILE>...
+
+Arguments:
+  <FILE>...  `describe-log-groups` JSON files, gzip exports, directories, or `-` for standard input
+
+Options:
+      --prices <FILE>              Price file. The default is the built-in CloudWatch Logs storage list
+      --as-of <YYYY-MM-DD>         Date ages are measured to, `YYYY-MM-DD`, midnight UTC. Without it, savings are omitted
+      --fail-stored-bytes <BYTES>  Exit 1 when a group with no retention has storedBytes greater than this
+      --json                       Print JSON instead of the text table
+      --md                         Print a Markdown table instead of the text table
+      --output <FILE>              Write the report to this file instead of standard output. An existing file is replaced
+  -q, --quiet                      Print only the result and errors: no notes, no warnings
+  -v, --verbose                    Add progress lines on standard error
+  -h, --help                       Print help
+  -V, --version                    Print version
+
+Exit codes: 0 ok, 1 unretained group above --fail-stored-bytes, 2 input or usage error, 3 --quiet with --verbose or --json with --md.
+.fi
+.SH DESCRIPTION
+cwlogs-retentie reads local
+.B aws logs describe-log-groups
+output and prices the archived storage of each log group from its
+.B storedBytes
+and its log group class.
+It lists the groups that never expire and estimates what keeping 30, 90, or 365 days would save per month if ingest stays steady.
+That estimate is not a forecast.
+.PP
+The tool reads files only.
+It makes no network call, uses no AWS SDK, and does not follow
+.BR nextToken .
+The advice lines show an
+.B aws logs put-retention-policy
+command and say it was not executed.
+The tool never runs it.
+.PP
+The input is a JSON file, a gzip file, a directory of such files, or
+.B -
+for standard input.
+A file is read as gzip when its first bytes are the gzip magic 1f 8b, whatever its name.
+Bytes after the first gzip member are an error.
+A file larger than 268435456 bytes is rejected.
+An explicit symlink is followed.
+A symlink inside a directory is skipped with a warning, and a directory nested deeper than 64 levels is an error.
+The account id in an ARN is not printed.
+.PP
+A log group needs a
+.B logGroupName
+of 1 to 512 characters from the CloudWatch name alphabet and a
+.B storedBytes
+that is a plain run of digits.
+.B retentionInDays
+is a whole number from 1 to 3653, as a number or as a string of digits; a value that CloudWatch does not offer, such as 8, is shown with a warning.
+Arrays and objects nested 128 or more levels deep are not JSON.
+A number given as a string is at most 20 characters, also with leading zeros.
+The total of the stored bytes of all groups must fit in 18446744073709551615; a larger total is an error, \fBstored bytes overflow\fR.
+A price file value is a plain decimal of at most 40 characters, with at most 28 digits after the point and at most 28 significant digits.
+.PP
+In a directory, a member that is a text file, is not UTF-8, or is empty is skipped with a warning.
+A member that is valid JSON without log groups is an error.
+With
+.BR --fail-stored-bytes ,
+any skipped member is an error, because the total would be missing it.
+.PP
+The built-in storage rates are the us-east-1 examples of the CloudWatch pricing page, read on 2026-11-09.
+Amounts are computed exactly and rounded once to the cent, half away from zero; an amount that does not fit is a price overflow and not a cut amount (see the README, Money precision).
+The 5 GB account free tier is not subtracted.
+When the date of the price data is more than 180 days before --as-of, or before today without --as-of, a warning goes to standard error and the exit code stays 0.
+The environment variable CWLOGS_RETENTIE_TODAY=YYYY-MM-DD sets the day used as today.
+The monthly cost is an estimate from list prices and not your AWS invoice: it is named estimated_usd_month, the text output says so in one line, and the JSON has "estimate": true.
+Ingestion, Logs Insights, Live Tail, data-protection scanning, and vended delivery tiers are not priced.
+.PP
+The whole file is held in memory with all of its fields, also those the tool does not use: about 53 times the file size for a list of numbers in an unknown field.
+Keep exports to the groups you need.
+In a path or an argument that is not UTF-8, each invalid byte is shown as
+.BR \exNN ;
+control and direction characters are shown as
+.BR \eu{...} .
+.SH OPTIONS
+.TP
+.B --prices \fIFILE\fR
+A price file with a source, a date, a region, and a rate per log group class.
+The default is the built-in list.
+.TP
+.B --as-of \fIYYYY-MM-DD\fR
+The date, midnight UTC, to which log group ages are measured.
+Without it, or without
+.BR creationTime ,
+the storage cost is shown and the savings are omitted.
+.TP
+.B --fail-stored-bytes \fIBYTES\fR
+Exit 1 when a group with no retention has
+.B storedBytes
+greater than
+.IR BYTES .
+A group that has retention does not trip it.
+The report is still printed.
+.TP
+.B --json
+Print one JSON document instead of the text table.
+Money is written as strings.
+The first key is
+.BR schema_version ,
+the whole number 1.
+Warnings go to standard error.
+.TP
+.B --output \fIFILE\fR
+Write the report to
+.I FILE
+instead of standard output, which stays empty.
+The report goes to a new temporary file in the same directory and is renamed over
+.IR FILE ,
+so
+.I FILE
+is either the old report or the whole new one.
+An existing file is replaced; a symbolic link at
+.I FILE
+is replaced and its target is not followed or changed.
+A missing directory is not created, and a directory at
+.I FILE
+is refused.
+A failed write is exit 2 with a message on standard error, and the temporary file is removed.
+Exit 1 from
+.B --fail-stored-bytes
+still writes the file.
+.TP
+.B --md
+Print a Markdown table instead of the text table, with the same amounts, one estimate line, and the notes.
+A pipe, a backslash, or a line break in a cell is escaped.
+With
+.B --quiet
+only the estimate line and the table are printed.
+.B --json
+with
+.B --md
+is a usage error with exit 3.
+.TP
+.B -q, --quiet
+Print only the result and errors.
+The text output is the estimate line, the table, and the threshold lines when
+.B --fail-stored-bytes
+is set; notes, advice, and warnings are left out, and no warning goes to standard error.
+The JSON document is not shortened.
+The exit codes do not change.
+.TP
+.B -v, --verbose
+Add progress lines on standard error, each starting with
+.BR progress: .
+Standard output does not change.
+.B --quiet
+with
+.B --verbose
+is a usage error with exit 3.
+.TP
+.B -h, --help
+Print the usage text.
+.TP
+.B -V, --version
+Print the version.
+.SH EXIT STATUS
+.TP
+.B 0
+The report was written.
+.TP
+.B 1
+A group with no retention has more stored bytes than the
+.B --fail-stored-bytes
+threshold.
+The report is still printed.
+.TP
+.B 2
+An input or usage error: an unreadable file, bad JSON, an invalid field, a duplicate log group name, a skipped directory member while a threshold is set, a bad option, or a standard output that is closed or cannot be written.
+The message goes to standard error and does not include file contents.
+A closed standard output is detected on Linux only; standard output on
+.I /dev/null
+still exits 0.
+With a closed standard output, a usage error or an input error is still shown on standard error.
+.TP
+.B 3
+--quiet and --verbose, or --json and --md, were both given.
+Nothing is read and standard output stays empty.
+.TP
+.B 130
+On Unix, SIGINT (Ctrl-C) ended the run.
+Standard output is empty and standard error has the line
+.BR "cwlogs-retentie: interrupted by SIGINT" .
+A report that is already being written is finished first.
+.SH EXAMPLES
+.nf
+cwlogs-retentie examples/describe-log-groups.json
+cwlogs-retentie --as-of 2026-11-09 --json logs/
+aws logs describe-log-groups | cwlogs-retentie --fail-stored-bytes 107374182400 -
+.fi
+.SH SEE ALSO
+README.md and QUALITY.md in the source tree.
