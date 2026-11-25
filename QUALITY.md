@@ -19,7 +19,15 @@ CI (in `.github/workflows/ci.yml`) was not read or started in this measurement: 
 | `cargo test --locked` (229 passed) | 0 |
 | `cargo test --release --locked` (229 passed) | 0 |
 
-Everything else is not run in this measurement: Rust 1.85, `cargo package`, `cargo deny`, `cargo audit`, `cargo about`, the unpacked `.crate`, fuzzing, mutation testing, Windows, macOS, musl, and GitHub Actions.
+Record of 2026-11-25, Rust 1.85.1 (rustc 1.85.1, cargo 1.85.1), run on the same code commit 829cc6e (commit df6514c has the same code), Linux x86_64 (glibc), one local machine:
+
+| Command | Exit |
+| --- | ---: |
+| `cargo +1.85 fmt --check` | 0 |
+| `cargo +1.85 clippy --all-targets --locked -- -D warnings` | 0 |
+| `cargo +1.85 test --locked` (229 passed) | 0 |
+
+Everything else is not run in this measurement: `cargo +1.85 test --release --locked`, `cargo package`, `cargo deny`, `cargo audit`, `cargo about`, the unpacked `.crate`, fuzzing, mutation testing, Windows, macOS, musl, and GitHub Actions.
 
 ## Test result per target
 
@@ -55,7 +63,7 @@ Red checks on a scratch copy outside the repository (kept outside, not part of t
 
 ## Not run
 
-- Not run in this measurement: `cargo +1.85` (clippy and tests), `cargo package` and the unpacked-`.crate` test run, `cargo deny`, `cargo audit`, `cargo about`.
+- Not run in this measurement: `cargo package` and the unpacked-`.crate` test run, `cargo deny`, `cargo audit`, `cargo about`.
 - A fuzz campaign.
 - A mutation run.
 - GitHub Actions. The workflows `ci.yml` and `release.yml` were not started (the CI account has a payment problem), so there is no CI result on any system and no release archive.

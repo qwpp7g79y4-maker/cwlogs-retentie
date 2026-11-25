@@ -21,7 +21,15 @@ CI (`.github/workflows/ci.yml`) is in deze meting niet gelezen of gestart: CI-ui
 | `cargo test --locked` (229 geslaagd) | 0 |
 | `cargo test --release --locked` (229 geslaagd) | 0 |
 
-Al het andere is in deze meting niet uitgevoerd: Rust 1.85, `cargo package`, `cargo deny`, `cargo audit`, `cargo about`, het uitgepakte `.crate`, fuzzen, mutatietests, Windows, macOS, musl en GitHub Actions.
+Meting van 2026-11-25 met Rust 1.85.1 (rustc 1.85.1, cargo 1.85.1), op dezelfde codecommit 829cc6e (commit df6514c heeft dezelfde code), Linux x86_64 (glibc), één lokale machine:
+
+| Commando | Afsluitcode |
+| --- | ---: |
+| `cargo +1.85 fmt --check` | 0 |
+| `cargo +1.85 clippy --all-targets --locked -- -D warnings` | 0 |
+| `cargo +1.85 test --locked` (229 geslaagd) | 0 |
+
+Al het andere is in deze meting niet uitgevoerd (not run): `cargo +1.85 test --release --locked`, `cargo package`, `cargo deny`, `cargo audit`, `cargo about`, het uitgepakte `.crate`, fuzzen, mutatietests, Windows, macOS, musl en GitHub Actions.
 
 ## Testresultaat per target
 
@@ -77,7 +85,7 @@ De overige rijen (L5 tot L22, D1, S1, M1) staan in `QUALITY.md`.
 
 ## Niet uitgevoerd
 
-- Niet uitgevoerd in deze meting: `cargo +1.85` (clippy en tests), `cargo package` en de testrun op het uitgepakte `.crate`, `cargo deny`, `cargo audit`, `cargo about`.
+- Niet uitgevoerd in deze meting: `cargo package` en de testrun op het uitgepakte `.crate`, `cargo deny`, `cargo audit`, `cargo about`.
 - GitHub Actions: de workflows zijn niet gestart (betaalprobleem), dus er is geen CI-resultaat op welk systeem dan ook; de commando's van de workflows zijn met de hand gedraaid (zie hierboven).
 - De release-workflow `.github/workflows/release.yml`: nooit gedraaid, er is geen tag.
 - Windows en macOS: er is geen test gedraaid, en de `cargo check`- en clippy-runs voor `x86_64-pc-windows-gnu` en `x86_64-apple-darwin` uit het record van 2026-11-19 zijn voor dit record niet herhaald (`build.rs` en de `--version`-constante zijn sindsdien nieuw).
