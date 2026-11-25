@@ -28,6 +28,7 @@ const VERSION: &str = env!("CARGO_PKG_VERSION");
 #[derive(Parser)]
 #[command(
     name = "cwlogs-retentie",
+    bin_name = "cwlogs-retentie",
     version = VERSION,
     about = "Estimate CloudWatch Logs storage cost from describe-log-groups JSON. Reads files only, no network.",
     after_help = "Exit codes: 0 ok, 1 unretained group above --fail-stored-bytes, 2 input or usage error, 3 --quiet with --verbose or --json with --md."

@@ -791,7 +791,9 @@ fn line_separator_and_bidi_override_are_not_raw() {
     assert_eq!(code, 2);
     assert!(stdout.is_empty());
     assert!(stderr.contains("ordinary.json"));
-    assert!(!stderr.contains('\\'));
+    // A Windows path has backslash separators of its own; the message adds none.
+    let shown = ordinary.to_str().unwrap();
+    assert!(!stderr.replace(shown, "").contains('\\'), "{stderr:?}");
     assert_eq!(stderr.lines().count(), 1, "{stderr:?}");
 
     let hidden = scratch.path().join("bad\u{2028}line\u{202e}name.json");
@@ -2384,11 +2386,13 @@ fn verbose_adds_progress_on_stderr_and_leaves_stdout_alone() {
     assert!(json_out.starts_with("{\n"), "{json_out}");
     assert!(stderr.contains("progress: reading "), "{stderr}");
     // The progress line escapes control characters of the path.
-    let odd = scratch.path().join("a\u{1b}[2Jb.json");
+    // Windows refuses ESC in a file name, so there a different control character stands in.
+    let control = if cfg!(windows) { '\u{7f}' } else { '\u{1b}' };
+    let odd = scratch.path().join(format!("a{control}[2Jb.json"));
     fs::copy(&groups, &odd).unwrap();
     let (code, _, stderr) = run(&["--verbose", odd.to_str().unwrap()]);
     assert_eq!(code, 0, "{stderr}");
-    assert!(!stderr.contains('\u{1b}'), "{stderr:?}");
+    assert!(!stderr.contains(control), "{stderr:?}");
 }
 
 #[test]
