@@ -28,8 +28,9 @@ Meting van 2026-11-25 met Rust 1.85.1 (rustc 1.85.1, cargo 1.85.1), op dezelfde 
 | `cargo +1.85 fmt --check` | 0 |
 | `cargo +1.85 clippy --all-targets --locked -- -D warnings` | 0 |
 | `cargo +1.85 test --locked` (229 geslaagd) | 0 |
+| `cargo +1.85 test --release --locked` (229 geslaagd, 0 mislukt, 0 genegeerd, 2026-11-25) | 0 |
 
-Al het andere is in deze meting niet uitgevoerd (not run): `cargo +1.85 test --release --locked`, `cargo package`, `cargo deny`, `cargo audit`, `cargo about`, het uitgepakte `.crate`, fuzzen, mutatietests, Windows, macOS, musl en GitHub Actions.
+Al het andere is in deze meting niet uitgevoerd (not run): `cargo package`, `cargo deny`, `cargo audit`, `cargo about`, het uitgepakte `.crate`, fuzzen, mutatietests, Windows, macOS, musl en GitHub Actions.
 
 ## Testresultaat per target
 
@@ -89,7 +90,6 @@ De overige rijen (L5 tot L22, D1, S1, M1) staan in `QUALITY.md`.
 - GitHub Actions: de workflows zijn niet gestart (betaalprobleem), dus er is geen CI-resultaat op welk systeem dan ook; de commando's van de workflows zijn met de hand gedraaid (zie hierboven).
 - De release-workflow `.github/workflows/release.yml`: nooit gedraaid, er is geen tag.
 - Windows en macOS: er is geen test gedraaid, en de `cargo check`- en clippy-runs voor `x86_64-pc-windows-gnu` en `x86_64-apple-darwin` uit het record van 2026-11-19 zijn voor dit record niet herhaald (`build.rs` en de `--version`-constante zijn sindsdien nieuw).
-- `cargo test --release` op Rust 1.85.
 - De testsuite op musl.
 - Een fuzz-campagne en een mutatierun.
 - `git tag` en `cargo publish`: er is niets gepubliceerd.

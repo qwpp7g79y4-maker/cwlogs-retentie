@@ -26,8 +26,9 @@ Record of 2026-11-25, Rust 1.85.1 (rustc 1.85.1, cargo 1.85.1), run on the same 
 | `cargo +1.85 fmt --check` | 0 |
 | `cargo +1.85 clippy --all-targets --locked -- -D warnings` | 0 |
 | `cargo +1.85 test --locked` (229 passed) | 0 |
+| `cargo +1.85 test --release --locked` (229 passed, 0 failed, 0 ignored, 2026-11-25) | 0 |
 
-Everything else is not run in this measurement: `cargo +1.85 test --release --locked`, `cargo package`, `cargo deny`, `cargo audit`, `cargo about`, the unpacked `.crate`, fuzzing, mutation testing, Windows, macOS, musl, and GitHub Actions.
+Everything else is not run in this measurement: `cargo package`, `cargo deny`, `cargo audit`, `cargo about`, the unpacked `.crate`, fuzzing, mutation testing, Windows, macOS, musl, and GitHub Actions.
 
 ## Test result per target
 
@@ -67,7 +68,6 @@ Red checks on a scratch copy outside the repository (kept outside, not part of t
 - A fuzz campaign.
 - A mutation run.
 - GitHub Actions. The workflows `ci.yml` and `release.yml` were not started (the CI account has a payment problem), so there is no CI result on any system and no release archive.
-- `cargo test --release` on Rust 1.85.
 - Windows and macOS. No test was run on either system, and the `cargo check` and clippy runs for `x86_64-pc-windows-gnu` and `x86_64-apple-darwin` of the 2026-11-19 record were not repeated for this record (`build.rs` and the `--version` constant are new since then). Tests that need Unix paths, symlinks, FIFOs, or control characters in file names run only on Unix. Tests that need `/dev/full`, a closed descriptor, a file name that is not UTF-8, or an escape character in a file name run only on Linux.
 - The test suite on musl (see "Known limits").
 - `mandoc -Tlint` on the man page (not installed); `man -l man/cwlogs-retentie.1` renders without a message.
