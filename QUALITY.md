@@ -1,40 +1,29 @@
 # Quality
 
-This commit changes documentation only; the measurements below apply to code commit 372b631.
+This commit changes documentation only; the measurements below apply to code commit 829cc6e.
 
 Suite: 229 passed, 0 ignored, 0 failed.
 
-Record of 2026-11-20, run on the clean tree of commit 372b6314cc063cd94fb05f66566ac8a10206657e (`372b631`), the last commit that changed code or tests. Later commits change documentation only. rustc 1.99.0 and 1.85.1, Linux x86_64 (glibc), no CI: every result below is from a run on one local machine, not from GitHub Actions. Version 1.0.0 is not published and has no git tag.
+Record of 2026-11-25, run on a clean worktree of commit 829cc6e64e1d1d8d90820d5ef77b7b8757cc359d (`829cc6e`), the last commit that changed code or tests. Later commits change documentation only. rustc 1.99.0, cargo 1.99.0, Linux x86_64 (glibc). Every result in the table below comes from this one run on one local machine. Version 1.0.0 is not published and has no git tag.
 
-CI (in `.github/workflows/ci.yml`): fmt, `clippy -D warnings`, `cargo test --locked`, and `cargo test --release --locked` on four systems; a Rust 1.85 job with the same clippy and test steps; `cargo audit`; `cargo deny --locked check licenses`; and a package job that runs `cargo package`, unpacks the `.crate`, and runs `cargo test` in it. `.github/workflows/release.yml` builds the archives for five targets from a `v*` tag after the same CI. Neither workflow has run (see "Not run"); the commands were run by hand, as listed below.
+Only the four commands below were run in this measurement. Anything else in this file that is not in that table (per-target details beyond the counts, red checks, time and memory figures, closed standard output, known limits) is an earlier record and was not repeated here.
+
+CI (in `.github/workflows/ci.yml`) was not read or started in this measurement: CI result not run here.
 
 ## Commands
 
 | Command | Exit |
 | --- | ---: |
 | `cargo fmt --check` | 0 |
-| `cargo clippy --locked --offline --all-targets -j 2 -- -D warnings` | 0 |
-| `cargo +1.85 clippy --locked --offline --all-targets -j 2 -- -D warnings` | 0 |
-| `cargo test --locked --offline -j 2 --no-fail-fast -- --test-threads 2` (229 passed) | 0 |
-| `cargo test --locked --offline -j 2 --release --no-fail-fast -- --test-threads 2` (227 passed) | 0 |
-| `cargo +1.85 test --locked --offline -j 2 --no-fail-fast -- --test-threads 2` (227 passed) | 0 |
-| `cargo package --locked --offline --allow-dirty` (builds and checks the package) | 0 |
-| unpack the `.crate` into an empty directory, `cargo test --offline -j 2 --no-fail-fast -- --test-threads 2` in it (227 passed) | 0 |
-| `cargo package --locked --offline --allow-dirty --no-verify --list` (46 paths) | 0 |
-| `cargo deny --locked --offline check licenses` | 0 |
-| `cargo audit --no-fetch` (1527 advisories, 76 crates) | 0 |
-| `cargo about generate --locked --offline about.hbs` (a 29309-byte HTML file; run before the documentation commits, which do not touch `about.hbs`, `about.toml`, or `Cargo.lock`) | 0 |
+| `cargo clippy --all-targets --locked -- -D warnings` | 0 |
+| `cargo test --locked` (229 passed) | 0 |
+| `cargo test --release --locked` (229 passed) | 0 |
 
-
-Only the debug test run in the first test row was repeated on this commit; the other rows were measured on code commit f09b04a and not repeated for the later code commits.
-
-`cargo package --list` has 46 paths. Among them are `build.rs`, `about.hbs`, `about.toml`, `.github/workflows/release.yml`, `CONTRIBUTING.md`, both READMEs, both QUALITY files, `examples/README.md`, `examples/describe-log-groups.expected.txt`, `SECURITY.md`, and `man/cwlogs-retentie.1`; none of the files that `.gitignore` and the `exclude` line of `Cargo.toml` leave out.
-
-The debug test run covers the debug build, where `--version` prints the commit (`version_has_the_commit_in_debug_builds_only`); the release run covers the version without a commit. In the unpacked package the same test follows whatever git reports for that directory.
+Everything else is not run in this measurement: Rust 1.85, `cargo package`, `cargo deny`, `cargo audit`, `cargo about`, the unpacked `.crate`, fuzzing, mutation testing, Windows, macOS, musl, and GitHub Actions.
 
 ## Test result per target
 
-`cargo test --locked --offline -j 2 --no-fail-fast -- --test-threads 2` in the debug profile, and the same with `--release`, give the same counts. `cargo +1.85 test` in both profiles gives them too.
+`cargo test --locked` in the debug profile and `cargo test --release --locked` give the same counts.
 
 | Target | Passed | Failed | Ignored |
 | --- | ---: | ---: | ---: |
@@ -48,7 +37,7 @@ The debug test run covers the debug build, where `--version` prints the commit (
 | doc-tests | 0 | 0 | 0 |
 | total | 229 | 0 | 0 |
 
-Release and Rust 1.85 were run as listed under "Commands"; all exit codes are 0.
+Debug and release were run as listed under "Commands"; both exit codes are 0.
 
 Red checks. A test that records a change is run before the change and shown red, then green after:
 
@@ -66,6 +55,7 @@ Red checks on a scratch copy outside the repository (kept outside, not part of t
 
 ## Not run
 
+- Not run in this measurement: `cargo +1.85` (clippy and tests), `cargo package` and the unpacked-`.crate` test run, `cargo deny`, `cargo audit`, `cargo about`.
 - A fuzz campaign.
 - A mutation run.
 - GitHub Actions. The workflows `ci.yml` and `release.yml` were not started (the CI account has a payment problem), so there is no CI result on any system and no release archive.

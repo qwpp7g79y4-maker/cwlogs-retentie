@@ -1,32 +1,27 @@
 # Kwaliteit
 
-Deze commit wijzigt alleen documentatie; de meting hieronder geldt voor codecommit 372b631.
+Deze commit wijzigt alleen documentatie; de meting hieronder geldt voor codecommit 829cc6e.
 
 Suite: 229 passed, 0 ignored, 0 failed.
 
-Dit is de Nederlandse samenvatting van `QUALITY.md`. De Engelse tekst is leidend voor de uitgebreide meetverhalen (rode controles, tijd en geheugen op 1x, 2x en 4x de invoer, gesloten en volle standaarduitvoer); hieronder staan dezelfde claim-tabel, de testtelling en de lijst van wat niet is uitgevoerd. Alleen gemeten waarden staan hier. Lokale runs worden nooit als CI-uitslag gemeld.
+Dit is de Nederlandse samenvatting van `QUALITY.md`. De Engelse tekst is leidend. Alleen gemeten waarden staan hier. Lokale runs worden nooit als CI-uitslag gemeld.
 
-Gemeten op 2026-11-20 op de schone werkmap van commit 372b6314cc063cd94fb05f66566ac8a10206657e (`372b631`), de laatste commit die code of tests wijzigde; latere commits wijzigen alleen documentatie. rustc 1.99.0 en 1.85.1, Linux x86_64 (glibc). Er is geen CI: elk resultaat komt van een run op één lokale machine, niet van GitHub Actions. Versie 1.0.0 is niet gepubliceerd en heeft geen git-tag.
+Gemeten op 2026-11-25 op een schone worktree van commit 829cc6e64e1d1d8d90820d5ef77b7b8757cc359d (`829cc6e`), de laatste commit die code of tests wijzigde; latere commits wijzigen alleen documentatie. rustc 1.99.0, cargo 1.99.0, Linux x86_64 (glibc). Elk resultaat in de tabel hieronder komt van deze ene run op één lokale machine. Versie 1.0.0 is niet gepubliceerd en heeft geen git-tag.
+
+Alleen de vier commando's hieronder zijn in deze meting gedraaid. Wat verder in dit bestand staat en niet in die tabel (rode controles, tijd- en geheugencijfers, gesloten standaarduitvoer, bekende grenzen) is een eerder record en is hier niet herhaald.
+
+CI (`.github/workflows/ci.yml`) is in deze meting niet gelezen of gestart: CI-uitslag niet uitgevoerd (not run).
 
 ## Uitgevoerde controles
 
 | Commando | Afsluitcode |
 | --- | ---: |
 | `cargo fmt --check` | 0 |
-| `cargo clippy --locked --offline --all-targets -j 2 -- -D warnings` | 0 |
-| `cargo +1.85 clippy --locked --offline --all-targets -j 2 -- -D warnings` | 0 |
-| `cargo test --locked --offline -j 2 --no-fail-fast -- --test-threads 2` (229 passed) | 0 |
-| `cargo test --locked --offline -j 2 --release --no-fail-fast -- --test-threads 2` (227 geslaagd) | 0 |
-| `cargo +1.85 test --locked --offline -j 2 --no-fail-fast -- --test-threads 2` (227 geslaagd) | 0 |
-| `cargo package --locked --offline --allow-dirty` (bouwt en controleert het pakket) | 0 |
-| het `.crate` uitpakken in een lege map, daar `cargo test --offline -j 2 --no-fail-fast -- --test-threads 2` (227 geslaagd) | 0 |
-| `cargo package --locked --offline --allow-dirty --no-verify --list` (46 paden) | 0 |
-| `cargo deny --locked --offline check licenses` | 0 |
-| `cargo audit --no-fetch` (1527 advisories, 76 crates) | 0 |
-| `cargo about generate --locked --offline about.hbs` (een HTML-bestand van 29309 bytes; gedraaid vóór de documentatiecommits, die `about.hbs`, `about.toml` en `Cargo.lock` niet wijzigen) | 0 |
+| `cargo clippy --all-targets --locked -- -D warnings` | 0 |
+| `cargo test --locked` (229 geslaagd) | 0 |
+| `cargo test --release --locked` (229 geslaagd) | 0 |
 
-
-Alleen de debug-testrun in de eerste testrij is op deze commit herhaald; de andere rijen zijn gemeten op codecommit f09b04a en niet herhaald voor de latere codecommits.
+Al het andere is in deze meting niet uitgevoerd: Rust 1.85, `cargo package`, `cargo deny`, `cargo audit`, `cargo about`, het uitgepakte `.crate`, fuzzen, mutatietests, Windows, macOS, musl en GitHub Actions.
 
 ## Testresultaat per target
 
@@ -38,7 +33,7 @@ Alleen de debug-testrun in de eerste testrij is op deze commit herhaald; de ande
 | `tests/docs_clean.rs` | 8 | 0 | 0 |
 | `tests/handbook_help.rs` | 1 | 0 | 0 |
 | `tests/readme.rs` | 15 | 0 | 0 |
-| totaal | 228 | 0 | 0 |
+| totaal | 229 | 0 | 0 |
 
 ## Claim → test
 
@@ -82,6 +77,7 @@ De overige rijen (L5 tot L22, D1, S1, M1) staan in `QUALITY.md`.
 
 ## Niet uitgevoerd
 
+- Niet uitgevoerd in deze meting: `cargo +1.85` (clippy en tests), `cargo package` en de testrun op het uitgepakte `.crate`, `cargo deny`, `cargo audit`, `cargo about`.
 - GitHub Actions: de workflows zijn niet gestart (betaalprobleem), dus er is geen CI-resultaat op welk systeem dan ook; de commando's van de workflows zijn met de hand gedraaid (zie hierboven).
 - De release-workflow `.github/workflows/release.yml`: nooit gedraaid, er is geen tag.
 - Windows en macOS: er is geen test gedraaid, en de `cargo check`- en clippy-runs voor `x86_64-pc-windows-gnu` en `x86_64-apple-darwin` uit het record van 2026-11-19 zijn voor dit record niet herhaald (`build.rs` en de `--version`-constante zijn sindsdien nieuw).
