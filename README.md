@@ -1,7 +1,6 @@
 # cwlogs-retentie
 
-[![CI](https://github.com/qwpp7g79y4-maker/cwlogs-retentie/actions/workflows/ci.yml/badge.svg)](https://github.com/qwpp7g79y4-maker/cwlogs-retentie/actions/workflows/ci.yml)
-[![License: MIT OR Apache-2.0](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](#license)
+[![crates.io](https://img.shields.io/crates/v/cwlogs-retentie.svg)](https://crates.io/crates/cwlogs-retentie) [![downloads](https://img.shields.io/crates/d/cwlogs-retentie.svg)](https://crates.io/crates/cwlogs-retentie) [![CI](https://github.com/qwpp7g79y4-maker/cwlogs-retentie/actions/workflows/ci.yml/badge.svg)](https://github.com/qwpp7g79y4-maker/cwlogs-retentie/actions/workflows/ci.yml) [![PEPAI checked](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fqwpp7g79y4-maker%2Fcwlogs-retentie%2Fmain%2F.github%2Fbadge.json)](QUALITY.md) [![MSRV 1.85](https://img.shields.io/badge/MSRV-1.85-blue.svg)](https://github.com/qwpp7g79y4-maker/cwlogs-retentie/blob/main/Cargo.toml) [![License: MIT OR Apache-2.0](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](https://github.com/qwpp7g79y4-maker/cwlogs-retentie#license)
 
 Estimate what the stored bytes of your CloudWatch Logs log groups cost per month, find the groups that never expire, and see what a 30, 90, or 365 day retention would save. It is for anyone with an `aws logs describe-log-groups` export who wants the numbers without sending the export anywhere. The result is a table of USD amounts that you can check by hand (see "How it counts").
 
@@ -56,15 +55,15 @@ aws logs describe-log-groups | cwlogs-retentie --as-of "$(date -u +%Y-%m-%d)" -
 
 For several pages (`nextToken`), save each page into one empty directory outside this repository and pass the directory.
 
-## Aan de slag in 5 minuten
+## Quickstart in 5 minutes
 
-1. Installeer met `cargo install --locked --path .` (Rust 1.85 of nieuwer).
-2. Haal je export op: `aws logs describe-log-groups > /tmp/groepen.json`. Het bestand mag ook `.gz` zijn, of je geeft een map of `-` (standaardinvoer).
-3. Draai `cwlogs-retentie --as-of "$(date -u +%Y-%m-%d)" /tmp/groepen.json`. Zonder `--as-of` ontbreken de besparingskolommen.
-4. Lees de tabel: `estimated_usd_month` is de opslag van de bytes die al staan; `save_30_usd`, `save_90_usd` en `save_365_usd` zijn de besparing als je 30, 90 of 365 dagen bewaart en de aanvoer gelijk blijft.
-5. Het advies toont `aws logs put-retention-policy ...` en voert dat nooit uit. Een kortere bewaartermijn verwijdert logs die je niet terugkrijgt; het bedrag is een schatting, geen factuur en geen voorspelling.
+1. Install with `cargo install --locked --path .` (Rust 1.85 or newer).
+2. Get your export: `aws logs describe-log-groups > /tmp/groups.json`. The file may also be `.gz`, or you give a folder or `-` (standard input).
+3. Run `cwlogs-retentie --as-of "$(date -u +%Y-%m-%d)" /tmp/groups.json`. Without `--as-of` the savings columns are missing.
+4. Read the table: `estimated_usd_month` is the storage of the bytes already stored; `save_30_usd`, `save_90_usd` and `save_365_usd` are the saving if you keep 30, 90 or 365 days and the inflow stays the same.
+5. The advice shows `aws logs put-retention-policy ...` and never runs it. A shorter retention period deletes logs you do not get back; the amount is an estimate, not an invoice and not a forecast.
 
-De volledige Nederlandse README staat in `README.nl.md`.
+The full Dutch README is in `README.nl.md`.
 
 ## Options and usage
 

@@ -77,7 +77,7 @@ fn console_blocks(doc: &str) -> Vec<(String, Vec<String>, String)> {
 const EN_HEADINGS: [&str; 13] = [
     "Installation",
     "Quick start",
-    "Aan de slag in 5 minuten",
+    "Quickstart in 5 minutes",
     "Options and usage",
     "Example",
     "How it counts",
