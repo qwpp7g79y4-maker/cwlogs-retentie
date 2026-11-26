@@ -185,7 +185,7 @@ The same report as JSON, with `--json`:
 $ cwlogs-retention --json --as-of 2026-11-09 examples/describe-log-groups.json
 {
   "schema_version": 1,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "currency": "USD",
   "source": "https://aws.amazon.com/cloudwatch/pricing/",
   "date": "2026-11-09",

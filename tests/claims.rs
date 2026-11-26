@@ -346,7 +346,7 @@ fn claim_c15_json_money_strings() {
     let bill = bill_of(&group("/a", GIB, ""), Some("2026-11-09"), None);
     let text = render(&bill, true);
     assert!(text.ends_with('\n'));
-    assert!(text.contains("\"version\": \"1.0.0\""));
+    assert!(text.contains("\"version\": \"1.0.1\""));
     assert!(text.contains("\"source\": \"https://aws.amazon.com/cloudwatch/pricing/\""));
     assert!(text.contains("\"date\": \"2026-11-09\""));
     assert!(text.contains("\"estimated_usd_month\": \"0.03\""));
