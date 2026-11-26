@@ -24,7 +24,7 @@ cargo install --locked --path .
 cwlogs-retention --help
 ```
 
-This crate is not published, so there is no `cargo install cwlogs-retention` from crates.io. Binary archives for Linux (glibc and musl), Windows, and macOS are built by `.github/workflows/release.yml` when a `v*` tag is pushed; no tag exists yet, so there is no archive to download. Each archive would hold the binary, the man page, the READMEs, QUALITY, the licenses, and the third-party license list.
+From crates.io: `cargo install cwlogs-retention`. Binary archives for Linux (glibc and musl), Windows, and macOS are built by `.github/workflows/release.yml` when a `v*` tag is pushed; no tag exists yet, so there is no archive to download. Each archive would hold the binary, the man page, the READMEs, QUALITY, the licenses, and the third-party license list.
 
 Supported systems: Linux x86_64 is built and tested. The code compiles for Windows and macOS, but the tests were not run there (see `QUALITY.md`). The Unix-only parts are the SIGINT handling and the closed-standard-output check.
 
