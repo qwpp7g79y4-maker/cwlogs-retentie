@@ -233,7 +233,10 @@ fn write_report_file(path: &std::path::Path, bytes: &[u8]) -> std::io::Result<()
 }
 
 fn cannot_write() -> ExitCode {
-    let _ = writeln!(std::io::stderr(), "cwlogs-retention: could not write output");
+    let _ = writeln!(
+        std::io::stderr(),
+        "cwlogs-retention: could not write output"
+    );
     ExitCode::from(2)
 }
 
