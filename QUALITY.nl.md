@@ -1,5 +1,7 @@
 # Kwaliteit
 
+pep: 8.6
+
 Deze commit wijzigt alleen documentatie; de meting hieronder geldt voor codecommit 829cc6e.
 
 Suite: 229 passed, 0 ignored, 0 failed.

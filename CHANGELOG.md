@@ -5,7 +5,9 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.0] - 2026-11-15
+
+Changes made after 2026-11-15; the version number did not change.
 
 ### Added
 
@@ -68,7 +70,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - A usage error from the argument parser shows control and direction characters of the given arguments escaped.
 - A path that is not UTF-8 is shown as escaped bytes on Unix.
 
-## [1.0.0] - 2026-11-15
 
 ### Added
 

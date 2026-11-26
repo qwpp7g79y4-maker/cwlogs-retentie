@@ -1,7 +1,6 @@
 # cwlogs-retentie
 
-[![CI](https://github.com/qwpp7g79y4-maker/cwlogs-retentie/actions/workflows/ci.yml/badge.svg)](https://github.com/qwpp7g79y4-maker/cwlogs-retentie/actions/workflows/ci.yml)
-[![License: MIT OR Apache-2.0](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](#license)
+[![crates.io](https://img.shields.io/crates/v/cwlogs-retentie.svg)](https://crates.io/crates/cwlogs-retentie) [![downloads](https://img.shields.io/crates/d/cwlogs-retentie.svg)](https://crates.io/crates/cwlogs-retentie) [![CI](https://github.com/qwpp7g79y4-maker/cwlogs-retentie/actions/workflows/ci.yml/badge.svg)](https://github.com/qwpp7g79y4-maker/cwlogs-retentie/actions/workflows/ci.yml) [![PEPAI checked](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fqwpp7g79y4-maker%2Fcwlogs-retentie%2Fmain%2F.github%2Fbadge.json)](QUALITY.md) [![MSRV 1.85](https://img.shields.io/badge/MSRV-1.85-blue.svg)](https://github.com/qwpp7g79y4-maker/cwlogs-retentie/blob/main/Cargo.toml) [![License: MIT OR Apache-2.0](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](https://github.com/qwpp7g79y4-maker/cwlogs-retentie#license)
 
 Estimate what the stored bytes of your CloudWatch Logs log groups cost per month, find the groups that never expire, and see what a 30, 90, or 365 day retention would save. It is for anyone with an `aws logs describe-log-groups` export who wants the numbers without sending the export anywhere. The result is a table of USD amounts that you can check by hand (see "How it counts").
 
