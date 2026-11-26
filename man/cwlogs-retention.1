@@ -1,11 +1,11 @@
-.TH CWLOGS-RETENTIE 1 "2026-11-19" "cwlogs-retentie 1.0.0" "User Commands"
+.TH CWLOGS-RETENTION 1 "2026-11-19" "cwlogs-retention 1.0.0" "User Commands"
 .SH NAME
-cwlogs-retentie \- price CloudWatch Logs storage from describe-log-groups JSON
+cwlogs-retention \- price CloudWatch Logs storage from describe-log-groups JSON
 .SH SYNOPSIS
 .nf
 Estimate CloudWatch Logs storage cost from describe-log-groups JSON. Reads files only, no network.
 
-Usage: cwlogs-retentie [OPTIONS] <FILE>...
+Usage: cwlogs-retention [OPTIONS] <FILE>...
 
 Arguments:
   <FILE>...  `describe-log-groups` JSON files, gzip exports, directories, or `-` for standard input
@@ -25,7 +25,7 @@ Options:
 Exit codes: 0 ok, 1 unretained group above --fail-stored-bytes, 2 input or usage error, 3 --quiet with --verbose or --json with --md.
 .fi
 .SH DESCRIPTION
-cwlogs-retentie reads local
+cwlogs-retention reads local
 .B aws logs describe-log-groups
 output and prices the archived storage of each log group from its
 .B storedBytes
@@ -73,7 +73,7 @@ The built-in storage rates are the us-east-1 examples of the CloudWatch pricing 
 Amounts are computed exactly and rounded once to the cent, half away from zero; an amount that does not fit is a price overflow and not a cut amount (see the README, Money precision).
 The 5 GB account free tier is not subtracted.
 When the date of the price data is more than 180 days before --as-of, or before today without --as-of, a warning goes to standard error and the exit code stays 0.
-The environment variable CWLOGS_RETENTIE_TODAY=YYYY-MM-DD sets the day used as today.
+The environment variable CWLOGS_RETENTION_TODAY=YYYY-MM-DD sets the day used as today.
 The monthly cost is an estimate from list prices and not your AWS invoice: it is named estimated_usd_month, the text output says so in one line, and the JSON has "estimate": true.
 Ingestion, Logs Insights, Live Tail, data-protection scanning, and vended delivery tiers are not priced.
 .PP
@@ -190,13 +190,13 @@ Nothing is read and standard output stays empty.
 .B 130
 On Unix, SIGINT (Ctrl-C) ended the run.
 Standard output is empty and standard error has the line
-.BR "cwlogs-retentie: interrupted by SIGINT" .
+.BR "cwlogs-retention: interrupted by SIGINT" .
 A report that is already being written is finished first.
 .SH EXAMPLES
 .nf
-cwlogs-retentie examples/describe-log-groups.json
-cwlogs-retentie --as-of 2026-11-09 --json logs/
-aws logs describe-log-groups | cwlogs-retentie --fail-stored-bytes 107374182400 -
+cwlogs-retention examples/describe-log-groups.json
+cwlogs-retention --as-of 2026-11-09 --json logs/
+aws logs describe-log-groups | cwlogs-retention --fail-stored-bytes 107374182400 -
 .fi
 .SH SEE ALSO
 README.md and QUALITY.md in the source tree.

@@ -17,7 +17,7 @@ impl Error {
         }
     }
 
-    /// Text without the `cwlogs-retentie:` prefix.
+    /// Text without the `cwlogs-retention:` prefix.
     #[must_use]
     pub fn message(&self) -> &str {
         &self.message

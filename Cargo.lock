@@ -174,7 +174,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "cwlogs-retentie"
+name = "cwlogs-retention"
 version = "1.0.0"
 dependencies = [
  "clap",

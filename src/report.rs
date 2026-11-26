@@ -61,7 +61,7 @@ fn md_row(cells: &[String]) -> String {
 fn render_markdown(bill: &Bill, quiet: bool) -> String {
     let mut out = String::new();
     if !quiet {
-        out.push_str("# cwlogs-retentie\n\n");
+        out.push_str("# cwlogs-retention\n\n");
     }
     if let Some(limit) = bill.fail_stored_bytes {
         let yn = if bill.threshold_exceeded { "yes" } else { "no" };

@@ -85,17 +85,17 @@ jobs:
       - name: Package
         shell: bash
         run: |
-          name="cwlogs-retentie-${TAG}-${{ matrix.target }}"
+          name="cwlogs-retention-${TAG}-${{ matrix.target }}"
           mkdir -p "dist/$name"
           cp README.md README.nl.md QUALITY.md QUALITY.nl.md CHANGELOG.md LICENSE-MIT LICENSE-APACHE THIRD-PARTY-LICENSES.html "dist/$name/"
-          cp man/cwlogs-retentie.1 "dist/$name/"
+          cp man/cwlogs-retention.1 "dist/$name/"
           cd dist
           if [ "${{ runner.os }}" = "Windows" ]; then
-            cp "../target/${{ matrix.target }}/release/cwlogs-retentie.exe" "$name/"
+            cp "../target/${{ matrix.target }}/release/cwlogs-retention.exe" "$name/"
             7z a -tzip "$name.zip" "$name" > /dev/null
             sha256sum "$name.zip" > "$name.zip.sha256"
           else
-            cp "../target/${{ matrix.target }}/release/cwlogs-retentie" "$name/"
+            cp "../target/${{ matrix.target }}/release/cwlogs-retention" "$name/"
             tar -czf "$name.tar.gz" "$name"
             shasum -a 256 "$name.tar.gz" > "$name.tar.gz.sha256"
           fi
@@ -103,16 +103,16 @@ jobs:
       - name: Smoke test the archive
         shell: bash
         run: |
-          name="cwlogs-retentie-${TAG}-${{ matrix.target }}"
-          expected="cwlogs-retentie ${TAG#v}"
+          name="cwlogs-retention-${TAG}-${{ matrix.target }}"
+          expected="cwlogs-retention ${TAG#v}"
           mkdir smoke
           cd smoke
           if [ "${{ runner.os }}" = "Windows" ]; then
             7z x "../dist/$name.zip" > /dev/null
-            bin="./cwlogs-retentie.exe"
+            bin="./cwlogs-retention.exe"
           else
             tar -xzf "../dist/$name.tar.gz"
-            bin="./cwlogs-retentie"
+            bin="./cwlogs-retention"
           fi
           cd "$name"
           test -f THIRD-PARTY-LICENSES.html
@@ -148,5 +148,5 @@ jobs:
           if gh release view "$TAG" > /dev/null 2>&1; then
             gh release upload "$TAG" ./*
           else
-            gh release create "$TAG" --title "cwlogs-retentie $TAG" --generate-notes --verify-tag ./*
+            gh release create "$TAG" --title "cwlogs-retention $TAG" --generate-notes --verify-tag ./*
           fi

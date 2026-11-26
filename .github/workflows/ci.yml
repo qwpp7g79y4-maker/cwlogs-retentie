@@ -65,8 +65,8 @@ jobs:
         run: |
           cargo package --locked
           mkdir "$RUNNER_TEMP/unpacked"
-          tar -xzf target/package/cwlogs-retentie-*.crate -C "$RUNNER_TEMP/unpacked"
-          cd "$RUNNER_TEMP"/unpacked/cwlogs-retentie-*
+          tar -xzf target/package/cwlogs-retention-*.crate -C "$RUNNER_TEMP/unpacked"
+          cd "$RUNNER_TEMP"/unpacked/cwlogs-retention-*
           cargo test --locked --no-fail-fast
 
   audit:

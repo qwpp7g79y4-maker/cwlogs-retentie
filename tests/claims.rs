@@ -4,7 +4,7 @@ use std::fs;
 use std::path::PathBuf;
 use std::process::Command;
 
-use cwlogs_retentie::{
+use cwlogs_retention::{
     bill_from_inputs, days_from_civil, epoch_millis, format_dec, format_usd, load_prices_str,
     prices_builtin, render, valid_log_group_name, Bill, Class, NamedBytes, Options, FREE_TIER_LINE,
     MAX_FILE_BYTES, NOT_PRICED_LINE,
@@ -324,7 +324,7 @@ fn claim_c14_fail_stored_bytes_exit_1() {
     assert!(render(&over, false).contains("prices:"));
     let kept = bill_of(&group("/a", 100, r#","retentionInDays":30"#), None, Some(0));
     assert!(!kept.threshold_exceeded);
-    let dir = std::env::temp_dir().join(format!("cwlogs-retentie-c14-{}", std::process::id()));
+    let dir = std::env::temp_dir().join(format!("cwlogs-retention-c14-{}", std::process::id()));
     let _ = fs::remove_dir_all(&dir);
     fs::create_dir_all(&dir).unwrap();
     let path = dir.join("groups.json");
@@ -385,15 +385,15 @@ fn claim_c16_advice_is_not_executed() {
     ] {
         assert!(!sources.contains(needle), "{needle} is in src");
     }
-    let dir = std::env::temp_dir().join(format!("cwlogs-retentie-c16-{}", std::process::id()));
+    let dir = std::env::temp_dir().join(format!("cwlogs-retention-c16-{}", std::process::id()));
     let _ = fs::remove_dir_all(&dir);
     fs::create_dir_all(&dir).unwrap();
     let path = dir.join("groups.json");
     fs::write(&path, &json).unwrap();
-    let mut cmd = Command::new(env!("CARGO_BIN_EXE_cwlogs-retentie"));
+    let mut cmd = Command::new(env!("CARGO_BIN_EXE_cwlogs-retention"));
     cmd.current_dir(env!("CARGO_MANIFEST_DIR"));
     cmd.env("NO_COLOR", "1");
-    cmd.env("CWLOGS_RETENTIE_TODAY", "2026-11-20");
+    cmd.env("CWLOGS_RETENTION_TODAY", "2026-11-20");
     cmd.env("PATH", "/nonexistent-cwlogs-path");
     cmd.args(["--as-of", "2026-11-09", path.to_str().unwrap()]);
     let out = cmd.output().unwrap();
@@ -536,10 +536,10 @@ fn claim_c24_errors_hide_file_contents() {
 }
 
 fn run_bin(args: &[&str]) -> (i32, String, String) {
-    let mut cmd = Command::new(env!("CARGO_BIN_EXE_cwlogs-retentie"));
+    let mut cmd = Command::new(env!("CARGO_BIN_EXE_cwlogs-retention"));
     cmd.current_dir(env!("CARGO_MANIFEST_DIR"));
     cmd.env("NO_COLOR", "1");
-    cmd.env("CWLOGS_RETENTIE_TODAY", "2026-11-20");
+    cmd.env("CWLOGS_RETENTION_TODAY", "2026-11-20");
     cmd.args(args);
     let out = cmd.output().unwrap();
     (

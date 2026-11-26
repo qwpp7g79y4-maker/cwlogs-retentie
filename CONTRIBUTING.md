@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for your interest in cwlogs-retentie.
+Thanks for your interest in cwlogs-retention.
 
 ## Building and testing
 

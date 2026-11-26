@@ -6,15 +6,15 @@ use std::path::PathBuf;
 use std::process::Command;
 
 fn main() {
-    println!("cargo:rustc-check-cfg=cfg(cwlogs_retentie_git_sha)");
+    println!("cargo:rustc-check-cfg=cfg(cwlogs_retention_git_sha)");
     println!("cargo:rerun-if-changed=build.rs");
     watch_head();
     if std::env::var("PROFILE").as_deref() != Ok("debug") {
         return;
     }
     if let Some(sha) = git(&["rev-parse", "--verify", "HEAD"]).filter(|sha| is_commit(sha)) {
-        println!("cargo:rustc-cfg=cwlogs_retentie_git_sha");
-        println!("cargo:rustc-env=CWLOGS_RETENTIE_GIT_SHA={sha}");
+        println!("cargo:rustc-cfg=cwlogs_retention_git_sha");
+        println!("cargo:rustc-env=CWLOGS_RETENTION_GIT_SHA={sha}");
     }
 }
 

@@ -28,7 +28,7 @@ impl Scratch {
         static N: AtomicU64 = AtomicU64::new(0);
         let n = N.fetch_add(1, Ordering::Relaxed);
         let path =
-            std::env::temp_dir().join(format!("cwlogs-retentie-cli-{}-{n}", std::process::id()));
+            std::env::temp_dir().join(format!("cwlogs-retention-cli-{}-{n}", std::process::id()));
         fs::create_dir_all(&path).unwrap();
         Self { path }
     }
@@ -55,10 +55,10 @@ fn output_of(cmd: &mut Command) -> (i32, String, String) {
 }
 
 fn command(args: &[&str]) -> Command {
-    let mut cmd = Command::new(env!("CARGO_BIN_EXE_cwlogs-retentie"));
+    let mut cmd = Command::new(env!("CARGO_BIN_EXE_cwlogs-retention"));
     cmd.current_dir(env!("CARGO_MANIFEST_DIR"));
     cmd.env("NO_COLOR", "1");
-    cmd.env("CWLOGS_RETENTIE_TODAY", "2026-11-20");
+    cmd.env("CWLOGS_RETENTION_TODAY", "2026-11-20");
     cmd.args(args);
     cmd
 }
@@ -99,7 +99,7 @@ fn help_and_version_exit_0() {
     let (code, stdout, stderr) = run(&["--version"]);
     assert_eq!(code, 0);
     assert!(stderr.is_empty());
-    assert!(stdout.contains("cwlogs-retentie 1.0.0"));
+    assert!(stdout.contains("cwlogs-retention 1.0.0"));
 }
 
 /// The commit of this tree as git reports it, or `None` when git cannot say.
@@ -122,8 +122,8 @@ fn tree_commit() -> Option<String> {
 fn version_has_the_commit_in_debug_builds_only() {
     let commit = tree_commit();
     let expected = match (&commit, cfg!(debug_assertions)) {
-        (Some(sha), true) => format!("cwlogs-retentie 1.0.0 ({sha})\n"),
-        _ => "cwlogs-retentie 1.0.0\n".to_string(),
+        (Some(sha), true) => format!("cwlogs-retention 1.0.0 ({sha})\n"),
+        _ => "cwlogs-retention 1.0.0\n".to_string(),
     };
     for flag in ["--version", "-V"] {
         let (code, stdout, stderr) = run(&[flag]);
@@ -138,7 +138,7 @@ fn usage_errors_exit_2() {
     let (code, stdout, stderr) = run(&[]);
     assert_eq!(code, 2);
     assert!(stdout.is_empty());
-    assert!(stderr.contains("cwlogs-retentie"));
+    assert!(stderr.contains("cwlogs-retention"));
     let (code, _, stderr) = run(&["--no-such-flag", "x"]);
     assert_eq!(code, 2);
     assert!(!stderr.is_empty());
@@ -170,7 +170,7 @@ fn usage_errors_exit_2() {
     let (code, _, stderr) = run(&["--as-of", "2025-02-29", "examples/describe-log-groups.json"]);
     assert_eq!(code, 2);
     assert!(stderr.contains("invalid --as-of"));
-    assert!(stderr.starts_with("cwlogs-retentie: "));
+    assert!(stderr.starts_with("cwlogs-retention: "));
 }
 
 #[cfg(target_os = "linux")]
@@ -180,7 +180,7 @@ fn unwritable_stdout_exits_2() {
     cmd.stdout(File::create("/dev/full").unwrap());
     let (code, _, stderr) = output_of_stderr(&mut cmd);
     assert_eq!(code, 2, "{stderr}");
-    assert_eq!(stderr, "cwlogs-retentie: could not write output\n");
+    assert_eq!(stderr, "cwlogs-retention: could not write output\n");
 }
 
 #[cfg(target_os = "linux")]
@@ -228,7 +228,7 @@ fn missing_file_exits_2() {
     assert_eq!(code, 2);
     assert!(stdout.is_empty());
     assert!(stderr.contains("missing-groups.json"));
-    assert!(stderr.starts_with("cwlogs-retentie: "));
+    assert!(stderr.starts_with("cwlogs-retention: "));
 }
 
 #[test]
@@ -249,7 +249,7 @@ fn stdin_read_error_is_reported_with_a_dash_prefix() {
     let (code, stdout, stderr) = output_of(&mut cmd);
     assert_eq!(code, 2);
     assert!(stdout.is_empty());
-    assert!(stderr.starts_with("cwlogs-retentie: -: "), "{stderr}");
+    assert!(stderr.starts_with("cwlogs-retention: -: "), "{stderr}");
 }
 
 #[test]
@@ -458,7 +458,7 @@ fn prices_reject_a_directory() {
     assert_eq!(code, 2);
     assert!(stdout.is_empty());
     assert!(stderr.contains("not a file"));
-    assert!(stderr.starts_with("cwlogs-retentie: "));
+    assert!(stderr.starts_with("cwlogs-retention: "));
 }
 
 #[cfg(unix)]
@@ -576,7 +576,7 @@ fn directory_deeper_than_64_levels_is_an_error() {
     assert_eq!(code, 2);
     assert!(stdout.is_empty());
     assert!(stderr.contains("directory is nested too deeply"));
-    assert!(stderr.starts_with("cwlogs-retentie: "));
+    assert!(stderr.starts_with("cwlogs-retention: "));
 }
 
 #[test]
@@ -999,7 +999,7 @@ fn price_file_errors_carry_the_price_file_prefix() {
     assert_eq!(code, 2);
     assert!(stdout.is_empty());
     assert!(
-        stderr.starts_with("cwlogs-retentie: price file "),
+        stderr.starts_with("cwlogs-retention: price file "),
         "{stderr}"
     );
     assert!(stderr.contains("prices.json: missing source"), "{stderr}");
@@ -1123,19 +1123,19 @@ mod stdout_closed {
     use std::io::Write;
     use std::process::{Command, Stdio};
 
-    const MESSAGE: &str = "cwlogs-retentie: could not write output\n";
+    const MESSAGE: &str = "cwlogs-retention: could not write output\n";
     const EXAMPLE: &str = "examples/describe-log-groups.json";
 
     /// Runs the binary through `sh` with a redirection on standard output.
     fn sh(redirect: &str, arg: &str) -> (Option<i32>, String) {
         let _guard = spawn_lock();
-        let bin = env!("CARGO_BIN_EXE_cwlogs-retentie");
+        let bin = env!("CARGO_BIN_EXE_cwlogs-retention");
         let mut cmd = Command::new("sh");
         cmd.arg("-c")
             .arg(format!("exec \"$0\" {arg} {redirect}"))
             .arg(bin)
             .current_dir(env!("CARGO_MANIFEST_DIR"))
-            .env("CWLOGS_RETENTIE_TODAY", "2026-11-20")
+            .env("CWLOGS_RETENTION_TODAY", "2026-11-20")
             .stderr(Stdio::piped());
         let out = cmd.spawn().unwrap().wait_with_output().unwrap();
         (
@@ -1445,7 +1445,7 @@ fn newline_in_a_non_utf8_path_is_shown_as_a_unicode_escape() {
     assert_eq!(code, 2, "{stderr:?}");
     assert_eq!(stderr.lines().count(), 1, "{stderr:?}");
     assert!(
-        stderr.starts_with("cwlogs-retentie: no\\xff\\u{a}such\\u{d}\\u{1b}[31m: "),
+        stderr.starts_with("cwlogs-retention: no\\xff\\u{a}such\\u{d}\\u{1b}[31m: "),
         "{stderr:?}"
     );
 }
@@ -1546,7 +1546,7 @@ fn total_of_stored_bytes_over_u64_is_an_input_error_without_a_name() {
         }
         let (code, stdout, stderr) = run(&args);
         assert_eq!(code, 2, "{stdout}");
-        assert_eq!(stderr, "cwlogs-retentie: stored bytes overflow\n");
+        assert_eq!(stderr, "cwlogs-retention: stored bytes overflow\n");
     }
     // Each group alone is the largest accepted value.
     fs::write(&path, group("/a", u64::MAX)).unwrap();
@@ -2143,11 +2143,11 @@ fn without_as_of_the_price_age_is_measured_against_today() {
         "{stderr}"
     );
     let mut pinned_early = command(&args);
-    pinned_early.env("CWLOGS_RETENTIE_TODAY", "2000-06-01");
+    pinned_early.env("CWLOGS_RETENTION_TODAY", "2000-06-01");
     let (code, _, stderr) = output_of(&mut pinned_early);
     assert_eq!((code, stderr.as_str()), (0, ""));
     let mut clock = command(&args);
-    clock.env_remove("CWLOGS_RETENTIE_TODAY");
+    clock.env_remove("CWLOGS_RETENTION_TODAY");
     let (code, _, stderr) = output_of(&mut clock);
     assert_eq!(code, 0, "{stderr}");
     assert!(stderr.starts_with(STALE_WARNING_PREFIX), "{stderr}");
@@ -2555,7 +2555,7 @@ mod sigint {
             assert_eq!(code, Some(130), "{extra:?}: {stderr}");
             assert_eq!(stdout, "", "{extra:?}");
             assert_eq!(
-                stderr, "cwlogs-retentie: interrupted by SIGINT\n",
+                stderr, "cwlogs-retention: interrupted by SIGINT\n",
                 "{extra:?}"
             );
         }
@@ -2648,7 +2648,7 @@ fn output_write_errors_exit_2_with_a_clean_message() {
     let (code, stdout, stderr) = run(&["--output", odd.to_str().unwrap(), g]);
     assert_eq!((code, stdout.as_str()), (2, ""), "{stderr}");
     assert!(
-        stderr.starts_with("cwlogs-retentie: could not write the report to "),
+        stderr.starts_with("cwlogs-retention: could not write the report to "),
         "{stderr}"
     );
     assert!(
@@ -2663,7 +2663,7 @@ fn output_write_errors_exit_2_with_a_clean_message() {
     let (code, stdout, stderr) = run(&["--output", dir.to_str().unwrap(), g]);
     assert_eq!((code, stdout.as_str()), (2, ""), "{stderr}");
     assert!(
-        stderr.starts_with("cwlogs-retentie: could not write the report to "),
+        stderr.starts_with("cwlogs-retention: could not write the report to "),
         "{stderr}"
     );
     assert_eq!(listing(&dir), ["keep"]);
@@ -2686,7 +2686,7 @@ fn output_refuses_to_replace_a_special_file_and_leaves_it_as_it_is() {
         run(&["--output", pipe.to_str().unwrap(), input.to_str().unwrap()]);
     assert_eq!((code, stdout.as_str()), (2, ""), "{stderr}");
     assert!(
-        stderr.starts_with("cwlogs-retentie: could not write the report to "),
+        stderr.starts_with("cwlogs-retention: could not write the report to "),
         "{stderr}"
     );
     assert!(fs::symlink_metadata(&pipe).unwrap().file_type().is_fifo());
@@ -2718,7 +2718,7 @@ fn output_refuses_a_symlink_that_points_at_a_special_file_or_a_directory() {
             run(&["--output", link.to_str().unwrap(), input.to_str().unwrap()]);
         assert_eq!((code, stdout.as_str()), (2, ""), "{stderr}");
         assert!(
-            stderr.starts_with("cwlogs-retentie: could not write the report to "),
+            stderr.starts_with("cwlogs-retention: could not write the report to "),
             "{stderr}"
         );
         assert!(fs::symlink_metadata(link).unwrap().file_type().is_symlink());

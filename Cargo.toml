@@ -1,5 +1,5 @@
 [package]
-name = "cwlogs-retentie"
+name = "cwlogs-retention"
 version = "1.0.0"
 edition = "2021"
 rust-version = "1.85"
@@ -7,19 +7,19 @@ authors = ["PEPAI <pep_ai@icloud.com>"]
 license = "MIT OR Apache-2.0"
 description = "Offline CloudWatch Logs storage cost from describe-log-groups JSON"
 readme = "README.md"
-repository = "https://github.com/qwpp7g79y4-maker/cwlogs-retentie"
+repository = "https://github.com/qwpp7g79y4-maker/cwlogs-retention"
 homepage = "https://www.pepai.nl"
-documentation = "https://github.com/qwpp7g79y4-maker/cwlogs-retentie"
+documentation = "https://github.com/qwpp7g79y4-maker/cwlogs-retention"
 keywords = ["aws", "cloudwatch", "logs", "cost", "cli"]
 categories = ["command-line-utilities", "development-tools"]
 exclude = ["/blueprint.md", "/task.md"]
 
 [lib]
-name = "cwlogs_retentie"
+name = "cwlogs_retention"
 path = "src/lib.rs"
 
 [[bin]]
-name = "cwlogs-retentie"
+name = "cwlogs-retention"
 path = "src/main.rs"
 
 [dependencies]

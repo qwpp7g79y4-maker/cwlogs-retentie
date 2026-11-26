@@ -9,26 +9,26 @@ mod interrupt;
 #[allow(unsafe_code)]
 mod stdout_probe;
 
-use cwlogs_retentie::{
+use cwlogs_retention::{
     escape_controls, escape_os_str, execute_paths, load_prices_file, Error, Options,
 };
 
 /// `--version` text. A debug build adds the commit that build.rs found.
-#[cfg(all(debug_assertions, cwlogs_retentie_git_sha))]
+#[cfg(all(debug_assertions, cwlogs_retention_git_sha))]
 const VERSION: &str = concat!(
     env!("CARGO_PKG_VERSION"),
     " (",
-    env!("CWLOGS_RETENTIE_GIT_SHA"),
+    env!("CWLOGS_RETENTION_GIT_SHA"),
     ")"
 );
-#[cfg(not(all(debug_assertions, cwlogs_retentie_git_sha)))]
+#[cfg(not(all(debug_assertions, cwlogs_retention_git_sha)))]
 const VERSION: &str = env!("CARGO_PKG_VERSION");
 
 /// Estimate CloudWatch Logs storage cost from describe-log-groups JSON. Reads files only, no network.
 #[derive(Parser)]
 #[command(
-    name = "cwlogs-retentie",
-    bin_name = "cwlogs-retentie",
+    name = "cwlogs-retention",
+    bin_name = "cwlogs-retention",
     version = VERSION,
     about = "Estimate CloudWatch Logs storage cost from describe-log-groups JSON. Reads files only, no network.",
     after_help = "Exit codes: 0 ok, 1 unretained group above --fail-stored-bytes, 2 input or usage error, 3 --quiet with --verbose or --json with --md."
@@ -152,7 +152,7 @@ fn main() -> ExitCode {
                         interrupt::set_writing(false);
                         let _ = writeln!(
                             std::io::stderr(),
-                            "cwlogs-retentie: could not write the report to {}: {}",
+                            "cwlogs-retention: could not write the report to {}: {}",
                             escape_os_str(path.as_os_str()),
                             escape_controls(&err.to_string())
                         );
@@ -175,7 +175,7 @@ fn main() -> ExitCode {
             }
         }
         Err(err) => {
-            let _ = writeln!(std::io::stderr(), "cwlogs-retentie: {err}");
+            let _ = writeln!(std::io::stderr(), "cwlogs-retention: {err}");
             ExitCode::from(2)
         }
     }
@@ -196,7 +196,7 @@ fn write_report_file(path: &std::path::Path, bytes: &[u8]) -> std::io::Result<()
         path.file_name()
             .unwrap_or_else(|| std::ffi::OsStr::new("report")),
     );
-    name.push(format!(".cwlogs-retentie-{}.tmp", std::process::id()));
+    name.push(format!(".cwlogs-retention-{}.tmp", std::process::id()));
     let temp = parent.join(name);
     // A link at `path` is replaced, but a special file (pipe, device, socket) or a
     // directory, or a link pointing at one, is refused and left as it is.
@@ -233,15 +233,15 @@ fn write_report_file(path: &std::path::Path, bytes: &[u8]) -> std::io::Result<()
 }
 
 fn cannot_write() -> ExitCode {
-    let _ = writeln!(std::io::stderr(), "cwlogs-retentie: could not write output");
+    let _ = writeln!(std::io::stderr(), "cwlogs-retention: could not write output");
     ExitCode::from(2)
 }
 
-fn run(cli: &Cli) -> Result<cwlogs_retentie::Output, Error> {
+fn run(cli: &Cli) -> Result<cwlogs_retention::Output, Error> {
     let prices = if let Some(path) = &cli.prices {
         load_prices_file(path)?
     } else {
-        cwlogs_retentie::prices_builtin()
+        cwlogs_retention::prices_builtin()
     };
     let options = Options {
         prices,

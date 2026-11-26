@@ -1,12 +1,12 @@
-# cwlogs-retentie
+# cwlogs-retention
 
-[![crates.io](https://img.shields.io/crates/v/cwlogs-retentie.svg)](https://crates.io/crates/cwlogs-retentie) [![downloads](https://img.shields.io/crates/d/cwlogs-retentie.svg)](https://crates.io/crates/cwlogs-retentie) [![CI](https://github.com/qwpp7g79y4-maker/cwlogs-retentie/actions/workflows/ci.yml/badge.svg)](https://github.com/qwpp7g79y4-maker/cwlogs-retentie/actions/workflows/ci.yml) [![PEPAI checked](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fqwpp7g79y4-maker%2Fcwlogs-retentie%2Fmain%2F.github%2Fbadge.json)](QUALITY.md) [![MSRV 1.85](https://img.shields.io/badge/MSRV-1.85-blue.svg)](https://github.com/qwpp7g79y4-maker/cwlogs-retentie/blob/main/Cargo.toml) [![License: MIT OR Apache-2.0](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](https://github.com/qwpp7g79y4-maker/cwlogs-retentie#license)
+[![crates.io](https://img.shields.io/crates/v/cwlogs-retention.svg)](https://crates.io/crates/cwlogs-retention) [![downloads](https://img.shields.io/crates/d/cwlogs-retention.svg)](https://crates.io/crates/cwlogs-retention) [![CI](https://github.com/qwpp7g79y4-maker/cwlogs-retention/actions/workflows/ci.yml/badge.svg)](https://github.com/qwpp7g79y4-maker/cwlogs-retention/actions/workflows/ci.yml) [![PEPAI checked](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fqwpp7g79y4-maker%2Fcwlogs-retention%2Fmain%2F.github%2Fbadge.json)](QUALITY.md) [![MSRV 1.85](https://img.shields.io/badge/MSRV-1.85-blue.svg)](https://github.com/qwpp7g79y4-maker/cwlogs-retention/blob/main/Cargo.toml) [![License: MIT OR Apache-2.0](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](https://github.com/qwpp7g79y4-maker/cwlogs-retention#license)
 
 Estimate what the stored bytes of your CloudWatch Logs log groups cost per month, find the groups that never expire, and see what a 30, 90, or 365 day retention would save. It is for anyone with an `aws logs describe-log-groups` export who wants the numbers without sending the export anywhere. The result is a table of USD amounts that you can check by hand (see "How it counts").
 
 The tests and the measured numbers are in `QUALITY.md`.
 
-A `describe-log-groups` export already has the stored bytes and the retention of each log group. cwlogs-retentie prices that archived storage on your machine and says which groups never expire. It does not call AWS and it does not need an account.
+A `describe-log-groups` export already has the stored bytes and the retention of each log group. cwlogs-retention prices that archived storage on your machine and says which groups never expire. It does not call AWS and it does not need an account.
 
 What it does and does not do:
 
@@ -21,10 +21,10 @@ With Rust 1.85 or newer, from a clone of this repository:
 
 ```sh
 cargo install --locked --path .
-cwlogs-retentie --help
+cwlogs-retention --help
 ```
 
-This crate is not published, so there is no `cargo install cwlogs-retentie` from crates.io. Binary archives for Linux (glibc and musl), Windows, and macOS are built by `.github/workflows/release.yml` when a `v*` tag is pushed; no tag exists yet, so there is no archive to download. Each archive would hold the binary, the man page, the READMEs, QUALITY, the licenses, and the third-party license list.
+This crate is not published, so there is no `cargo install cwlogs-retention` from crates.io. Binary archives for Linux (glibc and musl), Windows, and macOS are built by `.github/workflows/release.yml` when a `v*` tag is pushed; no tag exists yet, so there is no archive to download. Each archive would hold the binary, the man page, the READMEs, QUALITY, the licenses, and the third-party license list.
 
 Supported systems: Linux x86_64 is built and tested. The code compiles for Windows and macOS, but the tests were not run there (see `QUALITY.md`). The Unix-only parts are the SIGINT handling and the closed-standard-output check.
 
@@ -35,7 +35,7 @@ Supported systems: Linux x86_64 is built and tested. The code compiles for Windo
 `examples/describe-log-groups.json` is one invented page of `aws logs describe-log-groups`. Run this from the repository root; it only reads the file and writes nothing:
 
 ```console
-$ cwlogs-retentie --quiet --as-of 2026-11-09 examples/describe-log-groups.json
+$ cwlogs-retention --quiet --as-of 2026-11-09 examples/describe-log-groups.json
 Estimate from list prices, not your AWS invoice (free tier, credits, discounts not included)
 
 log_group             class              retention  age_days  stored_bytes   gb  estimated_usd_month  save_30_usd  save_90_usd  save_365_usd
@@ -50,7 +50,7 @@ total                                                         417685569536  389 
 On your own account, pipe the export in instead of saving it first:
 
 ```sh
-aws logs describe-log-groups | cwlogs-retentie --as-of "$(date -u +%Y-%m-%d)" -
+aws logs describe-log-groups | cwlogs-retention --as-of "$(date -u +%Y-%m-%d)" -
 ```
 
 For several pages (`nextToken`), save each page into one empty directory outside this repository and pass the directory.
@@ -59,7 +59,7 @@ For several pages (`nextToken`), save each page into one empty directory outside
 
 1. Install with `cargo install --locked --path .` (Rust 1.85 or newer).
 2. Get your export: `aws logs describe-log-groups > /tmp/groups.json`. The file may also be `.gz`, or you give a folder or `-` (standard input).
-3. Run `cwlogs-retentie --as-of "$(date -u +%Y-%m-%d)" /tmp/groups.json`. Without `--as-of` the savings columns are missing.
+3. Run `cwlogs-retention --as-of "$(date -u +%Y-%m-%d)" /tmp/groups.json`. Without `--as-of` the savings columns are missing.
 4. Read the table: `estimated_usd_month` is the storage of the bytes already stored; `save_30_usd`, `save_90_usd` and `save_365_usd` are the saving if you keep 30, 90 or 365 days and the inflow stays the same.
 5. The advice shows `aws logs put-retention-policy ...` and never runs it. A shorter retention period deletes logs you do not get back; the amount is an estimate, not an invoice and not a forecast.
 
@@ -70,7 +70,7 @@ The full Dutch README is in `README.nl.md`.
 ```text
 Estimate CloudWatch Logs storage cost from describe-log-groups JSON. Reads files only, no network.
 
-Usage: cwlogs-retentie [OPTIONS] <FILE>...
+Usage: cwlogs-retention [OPTIONS] <FILE>...
 
 Arguments:
   <FILE>...  `describe-log-groups` JSON files, gzip exports, directories, or `-` for standard input
@@ -106,15 +106,15 @@ A price file (`--prices`) is a JSON object with `currency`, `source`, `date`, `r
 }
 ```
 
-If the date of the price data (the built-in one, or `date` in a `--prices` file) is more than 180 days before `--as-of`, or before today when `--as-of` is not given, a line `warning: price data dated DATE is N days old at DAY, ...` goes to standard error and the exit code stays 0. Exactly 180 days is not older. The environment variable `CWLOGS_RETENTIE_TODAY=YYYY-MM-DD` sets the day used as today, which keeps runs and tests from depending on the clock; the tests set it.
+If the date of the price data (the built-in one, or `date` in a `--prices` file) is more than 180 days before `--as-of`, or before today when `--as-of` is not given, a line `warning: price data dated DATE is N days old at DAY, ...` goes to standard error and the exit code stays 0. Exactly 180 days is not older. The environment variable `CWLOGS_RETENTION_TODAY=YYYY-MM-DD` sets the day used as today, which keeps runs and tests from depending on the clock; the tests set it.
 
 `--quiet` (`-q`) prints only the result: in text, the estimate line and the table (and the two threshold lines when `--fail-stored-bytes` is set), without notes, advice, or warnings, and no warning goes to standard error; the JSON stays whole. `--verbose` (`-v`) adds `progress:` lines on standard error and leaves standard output as it is. Both together are a usage error with exit 3 and nothing is read. Exit codes 0, 1, and 2 are unchanged.
 
 `--md` prints the same table as Markdown: the same amounts, with no other rounding, one estimate line, the notes, and a `|`, a backslash, or a line break inside a cell escaped. `--md` with `--json` is a usage error with exit 3.
 
-`--output FILE` writes the report to `FILE` instead of standard output, which stays empty. The report goes to a new temporary file in the same directory and is renamed over `FILE`, so `FILE` is the old report or the whole new one. An existing file is replaced. A symlink at `FILE` is replaced itself; its target is not followed and not changed. A missing directory is not created and a directory at `FILE` is refused; any failed write is exit 2 with `cwlogs-retentie: could not write the report to FILE: ...` and no temporary file left. A run that fails earlier (for example an unreadable input) leaves `FILE` as it was. `--fail-stored-bytes` still gives exit 1 and still writes the file.
+`--output FILE` writes the report to `FILE` instead of standard output, which stays empty. The report goes to a new temporary file in the same directory and is renamed over `FILE`, so `FILE` is the old report or the whole new one. An existing file is replaced. A symlink at `FILE` is replaced itself; its target is not followed and not changed. A missing directory is not created and a directory at `FILE` is refused; any failed write is exit 2 with `cwlogs-retention: could not write the report to FILE: ...` and no temporary file left. A run that fails earlier (for example an unreadable input) leaves `FILE` as it was. `--fail-stored-bytes` still gives exit 1 and still writes the file.
 
-On Unix, Ctrl-C (SIGINT) ends the run with exit 130 and the line `cwlogs-retentie: interrupted by SIGINT` on standard error. Nothing is written to standard output before the report is complete, so an interrupted run never leaves a half report or an empty one that looks like success. If the report is already being written, it is finished first and a second Ctrl-C ends the run at once.
+On Unix, Ctrl-C (SIGINT) ends the run with exit 130 and the line `cwlogs-retention: interrupted by SIGINT` on standard error. Nothing is written to standard output before the report is complete, so an interrupted run never leaves a half report or an empty one that looks like success. If the report is already being written, it is finished first and a second Ctrl-C ends the run at once.
 
 `--json` prints the same totals, with money as strings. The first key is `"schema_version": 1`, a whole number that changes only when a key is removed or changes meaning; keys are added without a change. Every JSON document has it, with or without `--quiet`, `--verbose`, or `--output`. A failed run prints no JSON, only a message on standard error, so there is no JSON error document. The source URL and the date are in the document (see "Example").
 
@@ -123,7 +123,7 @@ On Unix, Ctrl-C (SIGINT) ends the run with exit 130 and the line `cwlogs-retenti
 A test runs every console block in this file and compares it to this binary. `--as-of` is midnight UTC. The three groups were created 10, 400, and 365 days before 2026-11-09.
 
 ```console
-$ cwlogs-retentie --as-of 2026-11-09 examples/describe-log-groups.json
+$ cwlogs-retention --as-of 2026-11-09 examples/describe-log-groups.json
 prices: USD, source https://aws.amazon.com/cloudwatch/pricing/, date 2026-11-09, region us-east-1
 as-of: 2026-11-09
 free tier not applied: pricing examples waive the first 5 GB of archived logs per month for the account, and this export is not the whole account
@@ -151,8 +151,8 @@ note: savings assume steady ingest and that stored bytes are the logs still kept
 The same report as Markdown, with `--md`:
 
 ```console
-$ cwlogs-retentie --md --as-of 2026-11-09 examples/describe-log-groups.json
-# cwlogs-retentie
+$ cwlogs-retention --md --as-of 2026-11-09 examples/describe-log-groups.json
+# cwlogs-retention
 
 Estimate from list prices, not your AWS invoice (free tier, credits, discounts not included)
 
@@ -182,7 +182,7 @@ note: savings assume steady ingest and that stored bytes are the logs still kept
 The same report as JSON, with `--json`:
 
 ```console
-$ cwlogs-retentie --json --as-of 2026-11-09 examples/describe-log-groups.json
+$ cwlogs-retention --json --as-of 2026-11-09 examples/describe-log-groups.json
 {
   "schema_version": 1,
   "version": "1.0.0",
@@ -310,7 +310,7 @@ The tool has no AWS SDK and opens no network. A nextToken is not followed, so on
 
 A file larger than 268435456 bytes is rejected. A nested symlink is skipped with a warning. With `--json`, warnings go to standard error. An explicit symlink is followed. Passing a directory that is nested too deeply, past 64 levels, is an error: `directory is nested too deeply`.
 
-If standard output is closed or a write to it fails, including for `--help` and `--version`, the tool exits 2 with `cwlogs-retentie: could not write output` on standard error. With a closed standard output, a usage error or an input error is still shown on standard error (also exit 2). A closed standard output is detected on Linux only. Standard output on `/dev/null` still exits 0. A failed write of a warning to standard error is ignored.
+If standard output is closed or a write to it fails, including for `--help` and `--version`, the tool exits 2 with `cwlogs-retention: could not write output` on standard error. With a closed standard output, a usage error or an input error is still shown on standard error (also exit 2). A closed standard output is detected on Linux only. Standard output on `/dev/null` still exits 0. A failed write of a warning to standard error is ignored.
 
 ### Input rules
 
@@ -348,7 +348,7 @@ Report bugs through GitHub Issues of this repository. After a release the tool i
 
 ## Support
 
-Report a bug or ask a question through [GitHub Issues](https://github.com/qwpp7g79y4-maker/cwlogs-retentie/issues). Include the version, the command, and a minimal invented input, never a real export. For security problems use the private route in `SECURITY.md`. To contribute, read `CONTRIBUTING.md`.
+Report a bug or ask a question through [GitHub Issues](https://github.com/qwpp7g79y4-maker/cwlogs-retention/issues). Include the version, the command, and a minimal invented input, never a real export. For security problems use the private route in `SECURITY.md`. To contribute, read `CONTRIBUTING.md`.
 
 ## License
 

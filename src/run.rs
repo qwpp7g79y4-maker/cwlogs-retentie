@@ -96,9 +96,9 @@ fn civil_from_days_text(days: i64) -> String {
     format!("{year:04}-{month:02}-{day:02}")
 }
 
-/// Today as Unix milliseconds: the valid date in `CWLOGS_RETENTIE_TODAY`, else the clock.
+/// Today as Unix milliseconds: the valid date in `CWLOGS_RETENTION_TODAY`, else the clock.
 fn now_millis() -> Option<i64> {
-    if let Some(day) = std::env::var_os("CWLOGS_RETENTIE_TODAY") {
+    if let Some(day) = std::env::var_os("CWLOGS_RETENTION_TODAY") {
         if let Some(ms) = day.to_str().and_then(ymd_to_epoch_millis) {
             return Some(ms);
         }

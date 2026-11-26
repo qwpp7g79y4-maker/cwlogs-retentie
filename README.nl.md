@@ -1,12 +1,12 @@
-# cwlogs-retentie
+# cwlogs-retention
 
-[![crates.io](https://img.shields.io/crates/v/cwlogs-retentie.svg)](https://crates.io/crates/cwlogs-retentie) [![downloads](https://img.shields.io/crates/d/cwlogs-retentie.svg)](https://crates.io/crates/cwlogs-retentie) [![CI](https://github.com/qwpp7g79y4-maker/cwlogs-retentie/actions/workflows/ci.yml/badge.svg)](https://github.com/qwpp7g79y4-maker/cwlogs-retentie/actions/workflows/ci.yml) [![PEPAI checked](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fqwpp7g79y4-maker%2Fcwlogs-retentie%2Fmain%2F.github%2Fbadge.json)](QUALITY.md) [![MSRV 1.85](https://img.shields.io/badge/MSRV-1.85-blue.svg)](https://github.com/qwpp7g79y4-maker/cwlogs-retentie/blob/main/Cargo.toml) [![License: MIT OR Apache-2.0](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](https://github.com/qwpp7g79y4-maker/cwlogs-retentie#license)
+[![crates.io](https://img.shields.io/crates/v/cwlogs-retention.svg)](https://crates.io/crates/cwlogs-retention) [![downloads](https://img.shields.io/crates/d/cwlogs-retention.svg)](https://crates.io/crates/cwlogs-retention) [![CI](https://github.com/qwpp7g79y4-maker/cwlogs-retention/actions/workflows/ci.yml/badge.svg)](https://github.com/qwpp7g79y4-maker/cwlogs-retention/actions/workflows/ci.yml) [![PEPAI checked](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fqwpp7g79y4-maker%2Fcwlogs-retention%2Fmain%2F.github%2Fbadge.json)](QUALITY.md) [![MSRV 1.85](https://img.shields.io/badge/MSRV-1.85-blue.svg)](https://github.com/qwpp7g79y4-maker/cwlogs-retention/blob/main/Cargo.toml) [![License: MIT OR Apache-2.0](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](https://github.com/qwpp7g79y4-maker/cwlogs-retention#license)
 
 Schat wat de opgeslagen bytes van je CloudWatch Logs-loggroepen per maand kosten, vind de groepen die nooit verlopen, en zie wat een bewaartermijn van 30, 90 of 365 dagen zou besparen. Bedoeld voor iedereen met een export van `aws logs describe-log-groups` die de cijfers wil zonder de export ergens heen te sturen. Het resultaat is een tabel met USD-bedragen die je met de hand kunt narekenen (zie "Hoe het telt").
 
 De tests en de gemeten getallen staan in `QUALITY.md`.
 
-Een `describe-log-groups`-export bevat al de opgeslagen bytes en de bewaartermijn van elke loggroep. cwlogs-retentie prijst die opslag op je eigen machine en noemt de groepen die nooit verlopen. Het roept AWS niet aan en heeft geen account nodig.
+Een `describe-log-groups`-export bevat al de opgeslagen bytes en de bewaartermijn van elke loggroep. cwlogs-retention prijst die opslag op je eigen machine en noemt de groepen die nooit verlopen. Het roept AWS niet aan en heeft geen account nodig.
 
 Wat het wel en niet doet:
 
@@ -21,10 +21,10 @@ Met Rust 1.85 of nieuwer, vanuit een kloon van deze repository:
 
 ```sh
 cargo install --locked --path .
-cwlogs-retentie --help
+cwlogs-retention --help
 ```
 
-Deze crate is niet gepubliceerd, dus er is geen `cargo install cwlogs-retentie` vanaf crates.io. Binaire archieven voor Linux (glibc en musl), Windows en macOS worden door `.github/workflows/release.yml` gebouwd zodra een `v*`-tag wordt gepusht; er bestaat nog geen tag, dus er is nog geen archief om te downloaden. Elk archief zou de binary, de man-pagina, de README's, QUALITY, de licenties en de lijst met derde-partij-licenties bevatten.
+Deze crate is niet gepubliceerd, dus er is geen `cargo install cwlogs-retention` vanaf crates.io. Binaire archieven voor Linux (glibc en musl), Windows en macOS worden door `.github/workflows/release.yml` gebouwd zodra een `v*`-tag wordt gepusht; er bestaat nog geen tag, dus er is nog geen archief om te downloaden. Elk archief zou de binary, de man-pagina, de README's, QUALITY, de licenties en de lijst met derde-partij-licenties bevatten.
 
 Ondersteunde systemen: Linux x86_64 is gebouwd en getest. De code compileert voor Windows en macOS, maar de tests zijn daar niet gedraaid (zie `QUALITY.nl.md`). Alleen op Unix werken de SIGINT-afhandeling en de controle op gesloten standaarduitvoer.
 
@@ -35,7 +35,7 @@ Ondersteunde systemen: Linux x86_64 is gebouwd en getest. De code compileert voo
 `examples/describe-log-groups.json` is één verzonnen pagina van `aws logs describe-log-groups`. Draai dit vanuit de hoofdmap van de repository; het leest alleen het bestand en schrijft niets:
 
 ```console
-$ cwlogs-retentie --quiet --as-of 2026-11-09 examples/describe-log-groups.json
+$ cwlogs-retention --quiet --as-of 2026-11-09 examples/describe-log-groups.json
 Estimate from list prices, not your AWS invoice (free tier, credits, discounts not included)
 
 log_group             class              retention  age_days  stored_bytes   gb  estimated_usd_month  save_30_usd  save_90_usd  save_365_usd
@@ -50,7 +50,7 @@ total                                                         417685569536  389 
 Op je eigen account geef je de export rechtstreeks door in plaats van hem eerst op te slaan:
 
 ```sh
-aws logs describe-log-groups | cwlogs-retentie --as-of "$(date -u +%Y-%m-%d)" -
+aws logs describe-log-groups | cwlogs-retention --as-of "$(date -u +%Y-%m-%d)" -
 ```
 
 Bij meerdere pagina's (`nextToken`) sla je elke pagina op in één lege map buiten deze repository en geef je die map mee.
@@ -59,7 +59,7 @@ Bij meerdere pagina's (`nextToken`) sla je elke pagina op in één lege map buit
 
 1. Installeer met `cargo install --locked --path .` (Rust 1.85 of nieuwer).
 2. Haal je export op: `aws logs describe-log-groups > /tmp/groepen.json`. Het bestand mag ook `.gz` zijn, of je geeft een map of `-` (standaardinvoer).
-3. Draai `cwlogs-retentie --as-of "$(date -u +%Y-%m-%d)" /tmp/groepen.json`. Zonder `--as-of` ontbreken de besparingskolommen.
+3. Draai `cwlogs-retention --as-of "$(date -u +%Y-%m-%d)" /tmp/groepen.json`. Zonder `--as-of` ontbreken de besparingskolommen.
 4. Lees de tabel: `estimated_usd_month` is de opslag van de bytes die al staan; `save_30_usd`, `save_90_usd` en `save_365_usd` zijn de besparing als je 30, 90 of 365 dagen bewaart en de aanvoer gelijk blijft.
 5. Het advies toont `aws logs put-retention-policy ...` en voert dat nooit uit. Een kortere bewaartermijn verwijdert logs die je niet terugkrijgt; het bedrag is een schatting, geen factuur en geen voorspelling.
 
@@ -70,7 +70,7 @@ De uitvoer van `--help` (de tekst blijft Engels, net als de kolomnamen en meldin
 ```text
 Estimate CloudWatch Logs storage cost from describe-log-groups JSON. Reads files only, no network.
 
-Usage: cwlogs-retentie [OPTIONS] <FILE>...
+Usage: cwlogs-retention [OPTIONS] <FILE>...
 
 Arguments:
   <FILE>...  `describe-log-groups` JSON files, gzip exports, directories, or `-` for standard input
@@ -106,15 +106,15 @@ Een prijsbestand (`--prices`) is een JSON-object met `currency`, `source`, `date
 }
 ```
 
-Staan de prijsgegevens (de ingebouwde of `date` in een `--prices`-bestand) meer dan 180 dagen vóór `--as-of`, of vóór vandaag als `--as-of` ontbreekt, dan komt er een regel `warning: price data dated DATE is N days old at DAY, ...` op standaardfout en blijft de afsluitcode 0. Precies 180 dagen is niet ouder. De omgevingsvariabele `CWLOGS_RETENTIE_TODAY=YYYY-MM-DD` bepaalt welke dag "vandaag" is, zodat runs en tests niet van de klok afhangen; de tests zetten haar.
+Staan de prijsgegevens (de ingebouwde of `date` in een `--prices`-bestand) meer dan 180 dagen vóór `--as-of`, of vóór vandaag als `--as-of` ontbreekt, dan komt er een regel `warning: price data dated DATE is N days old at DAY, ...` op standaardfout en blijft de afsluitcode 0. Precies 180 dagen is niet ouder. De omgevingsvariabele `CWLOGS_RETENTION_TODAY=YYYY-MM-DD` bepaalt welke dag "vandaag" is, zodat runs en tests niet van de klok afhangen; de tests zetten haar.
 
 `--quiet` (`-q`) toont alleen het resultaat: in tekst de schattingsregel en de tabel (en de twee drempelregels als `--fail-stored-bytes` is gezet), zonder notities, advies of waarschuwingen, en er gaat geen waarschuwing naar standaardfout; de JSON blijft compleet. `--verbose` (`-v`) voegt `progress:`-regels toe op standaardfout en laat standaarduitvoer ongemoeid. Beide samen zijn een gebruiksfout met afsluitcode 3 en er wordt niets gelezen. De afsluitcodes 0, 1 en 2 blijven zoals ze zijn.
 
 `--md` toont dezelfde tabel als Markdown: dezelfde bedragen, zonder andere afronding, één schattingsregel, de notities, en een `|`, backslash of regeleinde in een cel wordt ge-escaped. `--md` samen met `--json` is een gebruiksfout met afsluitcode 3.
 
-`--output FILE` schrijft het rapport naar `FILE` in plaats van naar standaarduitvoer, die leeg blijft. Het rapport gaat naar een nieuw tijdelijk bestand in dezelfde map en wordt over `FILE` heen hernoemd, dus `FILE` is het oude rapport of het hele nieuwe. Een bestaand bestand wordt vervangen. Een symlink op `FILE` wordt zelf vervangen; het doel wordt niet gevolgd en niet gewijzigd. Een ontbrekende map wordt niet aangemaakt en een map op `FILE` wordt geweigerd; elke mislukte schrijfactie is afsluitcode 2 met `cwlogs-retentie: could not write the report to FILE: ...` en er blijft geen tijdelijk bestand achter. Een run die eerder mislukt (bijvoorbeeld een onleesbare invoer) laat `FILE` zoals het was. `--fail-stored-bytes` geeft nog steeds afsluitcode 1 en schrijft het bestand wel.
+`--output FILE` schrijft het rapport naar `FILE` in plaats van naar standaarduitvoer, die leeg blijft. Het rapport gaat naar een nieuw tijdelijk bestand in dezelfde map en wordt over `FILE` heen hernoemd, dus `FILE` is het oude rapport of het hele nieuwe. Een bestaand bestand wordt vervangen. Een symlink op `FILE` wordt zelf vervangen; het doel wordt niet gevolgd en niet gewijzigd. Een ontbrekende map wordt niet aangemaakt en een map op `FILE` wordt geweigerd; elke mislukte schrijfactie is afsluitcode 2 met `cwlogs-retention: could not write the report to FILE: ...` en er blijft geen tijdelijk bestand achter. Een run die eerder mislukt (bijvoorbeeld een onleesbare invoer) laat `FILE` zoals het was. `--fail-stored-bytes` geeft nog steeds afsluitcode 1 en schrijft het bestand wel.
 
-Op Unix beëindigt Ctrl-C (SIGINT) de run met afsluitcode 130 en de regel `cwlogs-retentie: interrupted by SIGINT` op standaardfout. Er wordt niets naar standaarduitvoer geschreven voordat het rapport compleet is, dus een onderbroken run laat nooit een half rapport achter of een leeg rapport dat op succes lijkt. Wordt het rapport al geschreven, dan wordt het eerst afgemaakt en beëindigt een tweede Ctrl-C de run meteen.
+Op Unix beëindigt Ctrl-C (SIGINT) de run met afsluitcode 130 en de regel `cwlogs-retention: interrupted by SIGINT` op standaardfout. Er wordt niets naar standaarduitvoer geschreven voordat het rapport compleet is, dus een onderbroken run laat nooit een half rapport achter of een leeg rapport dat op succes lijkt. Wordt het rapport al geschreven, dan wordt het eerst afgemaakt en beëindigt een tweede Ctrl-C de run meteen.
 
 `--json` toont dezelfde totalen, met geld als strings. De eerste sleutel is `"schema_version": 1`, een geheel getal dat alleen verandert als een sleutel verdwijnt of van betekenis verandert; sleutels erbij zijn geen wijziging. Elk JSON-document heeft hem, ook met `--quiet`, `--verbose` of `--output`. Een mislukte run toont geen JSON, alleen een melding op standaardfout, dus er is geen JSON-foutdocument. De bron-URL en de datum staan in het document (zie "Voorbeeld").
 
@@ -123,7 +123,7 @@ Op Unix beëindigt Ctrl-C (SIGINT) de run met afsluitcode 130 en de regel `cwlog
 Een test draait elk console-blok in dit bestand en vergelijkt het met deze binary. `--as-of` is middernacht UTC. De drie groepen zijn 10, 400 en 365 dagen vóór 2026-11-09 gemaakt.
 
 ```console
-$ cwlogs-retentie --as-of 2026-11-09 examples/describe-log-groups.json
+$ cwlogs-retention --as-of 2026-11-09 examples/describe-log-groups.json
 prices: USD, source https://aws.amazon.com/cloudwatch/pricing/, date 2026-11-09, region us-east-1
 as-of: 2026-11-09
 free tier not applied: pricing examples waive the first 5 GB of archived logs per month for the account, and this export is not the whole account
@@ -150,8 +150,8 @@ note: savings assume steady ingest and that stored bytes are the logs still kept
 Hetzelfde rapport als Markdown, met `--md`:
 
 ```console
-$ cwlogs-retentie --md --as-of 2026-11-09 examples/describe-log-groups.json
-# cwlogs-retentie
+$ cwlogs-retention --md --as-of 2026-11-09 examples/describe-log-groups.json
+# cwlogs-retention
 
 Estimate from list prices, not your AWS invoice (free tier, credits, discounts not included)
 
@@ -181,7 +181,7 @@ note: savings assume steady ingest and that stored bytes are the logs still kept
 Hetzelfde rapport als JSON, met `--json`:
 
 ```console
-$ cwlogs-retentie --json --as-of 2026-11-09 examples/describe-log-groups.json
+$ cwlogs-retention --json --as-of 2026-11-09 examples/describe-log-groups.json
 {
   "schema_version": 1,
   "version": "1.0.0",
@@ -309,7 +309,7 @@ De tool heeft geen AWS SDK en opent geen netwerk (no network). Een nextToken wor
 
 Een bestand groter dan 268435456 bytes wordt geweigerd. Een geneste symlink wordt overgeslagen met een waarschuwing. Met `--json` gaan waarschuwingen naar standaardfout. Een expliciete symlink wordt gevolgd. Een map die te diep genest is, meer dan 64 niveaus, is een fout: `directory is nested too deeply`.
 
-Is standaarduitvoer gesloten of mislukt een schrijfactie ernaar, ook voor `--help` en `--version`, dan eindigt de tool met afsluitcode 2 en `cwlogs-retentie: could not write output` op standaardfout. Bij gesloten standaarduitvoer worden een gebruiksfout of invoerfout nog steeds op standaardfout getoond (ook afsluitcode 2). Gesloten standaarduitvoer wordt alleen op Linux gedetecteerd. Standaarduitvoer op `/dev/null` geeft nog steeds 0. Een mislukte schrijfactie van een waarschuwing naar standaardfout wordt genegeerd.
+Is standaarduitvoer gesloten of mislukt een schrijfactie ernaar, ook voor `--help` en `--version`, dan eindigt de tool met afsluitcode 2 en `cwlogs-retention: could not write output` op standaardfout. Bij gesloten standaarduitvoer worden een gebruiksfout of invoerfout nog steeds op standaardfout getoond (ook afsluitcode 2). Gesloten standaarduitvoer wordt alleen op Linux gedetecteerd. Standaarduitvoer op `/dev/null` geeft nog steeds 0. Een mislukte schrijfactie van een waarschuwing naar standaardfout wordt genegeerd.
 
 ### Invoerregels
 
@@ -347,7 +347,7 @@ Meld bugs via GitHub Issues van deze repository. Na een release staat de tool in
 
 ## Ondersteuning
 
-Meld een bug of stel een vraag via [GitHub Issues](https://github.com/qwpp7g79y4-maker/cwlogs-retentie/issues). Geef de versie, het commando en een minimale verzonnen invoer mee, nooit een echte export. Voor beveiligingsproblemen gebruik je de besloten route in `SECURITY.md`. Wil je bijdragen, lees dan `CONTRIBUTING.md`.
+Meld een bug of stel een vraag via [GitHub Issues](https://github.com/qwpp7g79y4-maker/cwlogs-retention/issues). Geef de versie, het commando en een minimale verzonnen invoer mee, nooit een echte export. Voor beveiligingsproblemen gebruik je de besloten route in `SECURITY.md`. Wil je bijdragen, lees dan `CONTRIBUTING.md`.
 
 ## Licentie
 

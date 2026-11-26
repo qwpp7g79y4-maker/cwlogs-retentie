@@ -40,7 +40,7 @@ fn rust_sources() -> String {
     out
 }
 
-/// Every ```console block: the first line is `$ cwlogs-retentie ARGS`, the rest is stdout.
+/// Every ```console block: the first line is `$ cwlogs-retention ARGS`, the rest is stdout.
 fn console_blocks(doc: &str) -> Vec<(String, Vec<String>, String)> {
     let mut out = Vec::new();
     let mut lines = doc.lines();
@@ -50,9 +50,9 @@ fn console_blocks(doc: &str) -> Vec<(String, Vec<String>, String)> {
         }
         let call = lines.next().expect("empty console block");
         let args: Vec<String> = call
-            .strip_prefix("$ cwlogs-retentie ")
+            .strip_prefix("$ cwlogs-retention ")
             .unwrap_or_else(|| {
-                panic!("console block does not start with `$ cwlogs-retentie `: {call}")
+                panic!("console block does not start with `$ cwlogs-retention `: {call}")
             })
             .split_whitespace()
             .map(str::to_string)
@@ -135,7 +135,7 @@ fn quick_start_reads_the_sample_and_writes_nothing() {
         let text = read(file);
         let quick = section(&text, heading);
         assert!(quick.contains(
-            "$ cwlogs-retentie --quiet --as-of 2026-11-09 examples/describe-log-groups.json"
+            "$ cwlogs-retention --quiet --as-of 2026-11-09 examples/describe-log-groups.json"
         ));
         for write in ["cat >", "tee ", "> examples", ">> ", "<<"] {
             assert!(!quick.contains(write), "{file} quick start writes: {write}");
@@ -146,7 +146,7 @@ fn quick_start_reads_the_sample_and_writes_nothing() {
 
 #[test]
 fn usage_block_is_the_help_text() {
-    let out = Command::new(env!("CARGO_BIN_EXE_cwlogs-retentie"))
+    let out = Command::new(env!("CARGO_BIN_EXE_cwlogs-retention"))
         .arg("--help")
         .output()
         .unwrap();
@@ -255,12 +255,12 @@ fn the_examples_folder_documents_each_command_and_its_expected_output() {
     let readme = read("examples/README.md");
     assert!(readme.contains("Expected exit code: 0"));
     let expected = read("examples/describe-log-groups.expected.txt");
-    let command = "cwlogs-retentie --as-of 2026-11-09 examples/describe-log-groups.json";
+    let command = "cwlogs-retention --as-of 2026-11-09 examples/describe-log-groups.json";
     assert!(readme.contains(&format!("```sh\n{command}\n```")));
     assert!(readme.contains("examples/describe-log-groups.expected.txt"));
-    let out = Command::new(env!("CARGO_BIN_EXE_cwlogs-retentie"))
+    let out = Command::new(env!("CARGO_BIN_EXE_cwlogs-retention"))
         .current_dir(env!("CARGO_MANIFEST_DIR"))
-        .env("CWLOGS_RETENTIE_TODAY", "2026-11-20")
+        .env("CWLOGS_RETENTION_TODAY", "2026-11-20")
         .args(["--as-of", "2026-11-09", "examples/describe-log-groups.json"])
         .output()
         .unwrap();
@@ -272,10 +272,10 @@ fn the_examples_folder_documents_each_command_and_its_expected_output() {
 fn console_examples_match_the_binary() {
     let readme = read("README.md");
     for (call, args, expected) in console_blocks(&readme) {
-        let mut cmd = Command::new(env!("CARGO_BIN_EXE_cwlogs-retentie"));
+        let mut cmd = Command::new(env!("CARGO_BIN_EXE_cwlogs-retention"));
         cmd.current_dir(env!("CARGO_MANIFEST_DIR"));
         cmd.env("NO_COLOR", "1");
-        cmd.env("CWLOGS_RETENTIE_TODAY", "2026-11-20");
+        cmd.env("CWLOGS_RETENTION_TODAY", "2026-11-20");
         cmd.args(&args);
         let out = cmd.output().unwrap();
         let stdout = String::from_utf8(out.stdout).unwrap();

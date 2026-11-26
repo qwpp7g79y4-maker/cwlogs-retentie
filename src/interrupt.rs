@@ -34,7 +34,7 @@ mod imp {
     }
     const SIGINT: i32 = 2;
     const SIG_DFL: usize = 0;
-    const MESSAGE: &[u8] = b"cwlogs-retentie: interrupted by SIGINT\n";
+    const MESSAGE: &[u8] = b"cwlogs-retention: interrupted by SIGINT\n";
 
     extern "C" fn on_sigint(_signum: i32) {
         // A report that is being written is finished first; a second Ctrl-C then has the

@@ -61,7 +61,7 @@ Red checks. A test that records a change is run before the change and shown red,
 
 Red checks on a scratch copy outside the repository (kept outside, not part of the package, removed afterwards):
 
-- `tests/handbook_help.rs` failed (`tests/handbook_help.rs:81`, the OPTIONS section of the man page must describe exactly the long options of `--help`) when the `--json` entry was removed from the OPTIONS section of `man/cwlogs-retentie.1`, and failed (`tests/handbook_help.rs:61`, the man page must contain the `--help` text verbatim) when one word of the option text was changed there.
+- `tests/handbook_help.rs` failed (`tests/handbook_help.rs:81`, the OPTIONS section of the man page must describe exactly the long options of `--help`) when the `--json` entry was removed from the OPTIONS section of `man/cwlogs-retention.1`, and failed (`tests/handbook_help.rs:61`, the man page must contain the `--help` text verbatim) when one word of the option text was changed there.
 - `tests/docs_clean.rs` failed, with the file and line, on one injected text each in `SECURITY.md`, `README.md`, `CHANGELOG.md`, `QUALITY.md`, the man page, `tests/cli.rs`, `.gitignore`, `Cargo.toml`, and `CHANGELOG.md` again: a local absolute path (two kinds), a home-relative path, an option of an internal wrapper (two), both internal file names, an internal tool name (two), and in `.gitignore` a comment that names a file. It failed in `Cargo.toml` when either entry was missing from `exclude`, as one line and as the block cargo writes.
 
 ## Not run
@@ -72,7 +72,7 @@ Red checks on a scratch copy outside the repository (kept outside, not part of t
 - GitHub Actions. The workflows `ci.yml` and `release.yml` were not started (the CI account has a payment problem), so there is no CI result on any system and no release archive.
 - Windows and macOS. No test was run on either system, and the `cargo check` and clippy runs for `x86_64-pc-windows-gnu` and `x86_64-apple-darwin` of the 2026-11-19 record were not repeated for this record (`build.rs` and the `--version` constant are new since then). Tests that need Unix paths, symlinks, FIFOs, or control characters in file names run only on Unix. Tests that need `/dev/full`, a closed descriptor, a file name that is not UTF-8, or an escape character in a file name run only on Linux.
 - The test suite on musl (see "Known limits").
-- `mandoc -Tlint` on the man page (not installed); `man -l man/cwlogs-retentie.1` renders without a message.
+- `mandoc -Tlint` on the man page (not installed); `man -l man/cwlogs-retention.1` renders without a message.
 - `git tag` and `cargo publish`; nothing is published.
 - The package job of the workflow. Its steps were run by hand as listed under "Commands".
 
@@ -84,23 +84,23 @@ Measured by hand in an earlier record, before the `--output`, SIGINT, and `build
 
 | Run | Exit | Message |
 | --- | ---: | --- |
-| `cwlogs-retentie examples/describe-log-groups.json >&-` | 2 | `cwlogs-retentie: could not write output` |
-| `cwlogs-retentie examples/describe-log-groups.json >/dev/full` | 2 | `cwlogs-retentie: could not write output` |
-| `cwlogs-retentie examples/describe-log-groups.json >/dev/null` | 0 | none |
-| `cwlogs-retentie examples/describe-log-groups.json 1<>/dev/null` | 0 | none |
+| `cwlogs-retention examples/describe-log-groups.json >&-` | 2 | `cwlogs-retention: could not write output` |
+| `cwlogs-retention examples/describe-log-groups.json >/dev/full` | 2 | `cwlogs-retention: could not write output` |
+| `cwlogs-retention examples/describe-log-groups.json >/dev/null` | 0 | none |
+| `cwlogs-retention examples/describe-log-groups.json 1<>/dev/null` | 0 | none |
 | `python3 -I`, `subprocess.run(..., stdout=subprocess.DEVNULL)` | 0 | empty |
-| `cwlogs-retentie examples/describe-log-groups.json \| true` | 2 | `cwlogs-retentie: could not write output` |
-| `cwlogs-retentie --help >&-` | 2 | `cwlogs-retentie: could not write output` |
-| `cwlogs-retentie --help >/dev/full` | 2 | `cwlogs-retentie: could not write output` |
-| `cwlogs-retentie --help >/dev/null`, `--help 1<>/dev/null` | 0 | none |
-| `cwlogs-retentie --help \| true` | 2 | `cwlogs-retentie: could not write output` |
-| `cwlogs-retentie --version >&-` | 2 | `cwlogs-retentie: could not write output` |
-| `cwlogs-retentie --version >/dev/full` | 2 | `cwlogs-retentie: could not write output` |
-| `cwlogs-retentie --version >/dev/null`, `--version 1<>/dev/null` | 0 | none |
-| `cwlogs-retentie --version \| true` | 2 | `cwlogs-retentie: could not write output` |
+| `cwlogs-retention examples/describe-log-groups.json \| true` | 2 | `cwlogs-retention: could not write output` |
+| `cwlogs-retention --help >&-` | 2 | `cwlogs-retention: could not write output` |
+| `cwlogs-retention --help >/dev/full` | 2 | `cwlogs-retention: could not write output` |
+| `cwlogs-retention --help >/dev/null`, `--help 1<>/dev/null` | 0 | none |
+| `cwlogs-retention --help \| true` | 2 | `cwlogs-retention: could not write output` |
+| `cwlogs-retention --version >&-` | 2 | `cwlogs-retention: could not write output` |
+| `cwlogs-retention --version >/dev/full` | 2 | `cwlogs-retention: could not write output` |
+| `cwlogs-retention --version >/dev/null`, `--version 1<>/dev/null` | 0 | none |
+| `cwlogs-retention --version \| true` | 2 | `cwlogs-retention: could not write output` |
 | `python3 -I`, `stdout=subprocess.DEVNULL` for `--help` and `--version` | 0 | empty |
-| `cwlogs-retentie --bogus >&-` | 2 | `error: unexpected argument '--bogus' found` and the usage |
-| `cwlogs-retentie /nonexistent/x.json >&-` | 2 | `cwlogs-retentie: /nonexistent/x.json: No such file or directory (os error 2)` |
+| `cwlogs-retention --bogus >&-` | 2 | `error: unexpected argument '--bogus' found` and the usage |
+| `cwlogs-retention /nonexistent/x.json >&-` | 2 | `cwlogs-retention: /nonexistent/x.json: No such file or directory (os error 2)` |
 | Report, `--help`, `--version` with `/proc` replaced by an empty tmpfs (`unshare -Urm`), standard output to a file | 0 | none; 1491, 854 and 22 bytes written |
 
 No run panicked. The `| true` case with the report exited 2 in 40 of 40 repeats; it depends on `true` closing the pipe before the report is written. The tests in the `stdout_closed` module of `tests/cli.rs` cover a closed and a full standard output for the report, `--help` and `--version`, `/dev/null` and `1<>/dev/null`, a null `Stdio` handle, and a broken pipe that is forced by closing the read end before any input is sent.
@@ -109,7 +109,7 @@ No run panicked. The `| true` case with the report exited 2 in 40 of 40 repeats;
 
 - This page records checks. It is not a guarantee and it is not a fuzz report.
 - Closed-stdout detection (`src/stdout_probe.rs`) works on Linux only. On other systems a closed standard output is not told apart from `/dev/null`.
-- A failed write of a warning to standard error is ignored: `cwlogs-retentie --json DIR 2>/dev/full` with a skipped member exits 0 (measured: `--json one.json 2>/dev/full` exits 0).
+- A failed write of a warning to standard error is ignored: `cwlogs-retention --json DIR 2>/dev/full` with a skipped member exits 0 (measured: `--json one.json 2>/dev/full` exits 0).
 - The built-in rates are the us-east-1 examples of the pricing page, read on 2026-11-09, and are not checked against the live page.
 - `nextToken` is not followed, so one response page is not the whole account.
 - The 268435456-byte limit applies to the unpacked size of a file or of standard input.
@@ -158,7 +158,7 @@ Every claim of `README.md`, with the test that proves it. Test names are from th
 | C15c | The documented `describe-log-groups` shape (`tests/fixtures/describe-log-groups-documented.json`: every documented field, minimal entries, empty `inheritedProperties`, both `arn` and `logGroupArn`, names with `_`, `.`, `#`, `/`, a page with `nextToken`, an empty page) is read without error and priced exactly (4.05 USD for 135 GB) | `documented_shape_with_arn_and_log_group_arn_prices_exactly`, `documented_shape_text_output_has_every_name_and_the_same_total`, `documented_pages_with_a_next_token_an_empty_page_and_a_directory_are_read`, `ambiguous_region_and_shape_are_rejected` | tested; written from the documentation without network (https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_DescribeLogGroups.html and https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_LogGroup.html), so a field added to the API later is not covered |
 | C15d | `--quiet` prints only the estimate line, the table, and threshold lines, hides warnings, keeps JSON whole and the exit codes; `--verbose` adds `progress:` lines on standard error only; both together exit 3 | `quiet_together_with_verbose_is_a_usage_error_with_exit_3`, `quiet_prints_only_the_result_and_hides_warnings`, `quiet_keeps_json_whole_and_the_threshold_exit_code_and_still_reports_errors`, `verbose_adds_progress_on_stderr_and_leaves_stdout_alone`, `help_lists_quiet_and_verbose` | tested |
 | C15e | `--md` prints a Markdown table with the amounts of the text and the JSON, one estimate line, warnings as quoted lines, `|` and line breaks escaped in cells; with `--json` it exits 3 | `markdown_table_has_the_amounts_of_the_text_and_the_json`, `markdown_keeps_warnings_quiet_and_json_conflict_rules`, `a_cell_cannot_break_the_table`, `console_examples_match_the_binary` | tested |
-| C15f | SIGINT (Unix) ends the run with exit 130, the line `cwlogs-retentie: interrupted by SIGINT` on standard error, and an empty standard output, in text, `--json`, and `--md`; a report that is already being written is finished first | `sigint::sigint_exits_130_with_one_line_and_no_output` | tested on Linux with a real `kill -INT`; not tried on macOS; the write-in-progress case is by construction, not by a test |
+| C15f | SIGINT (Unix) ends the run with exit 130, the line `cwlogs-retention: interrupted by SIGINT` on standard error, and an empty standard output, in text, `--json`, and `--md`; a report that is already being written is finished first | `sigint::sigint_exits_130_with_one_line_and_no_output` | tested on Linux with a real `kill -INT`; not tried on macOS; the write-in-progress case is by construction, not by a test |
 | C15g | `--output FILE` writes the whole report through a temporary file in the same directory and a rename; a symlink is replaced, never followed; a missing directory, a directory in the way, or a failed write is exit 2 with a clean message and no temporary file; a failed run leaves the old file | `output_writes_the_report_to_a_file_and_replaces_an_existing_one_atomically`, `output_keeps_the_threshold_exit_code_and_still_writes_the_file`, `output_is_not_touched_when_the_run_fails`, `output_write_errors_exit_2_with_a_clean_message`, `output_does_not_follow_a_symlink_and_replaces_the_link`, `help_lists_output` | tested on Linux; a full disk was not tried; an interrupted rename is not tested, a SIGINT during the write is held until the rename is done |
 | C15h | Every JSON document starts with `"schema_version": 1`, also with `--quiet`, `--verbose`, `--output`, a directory, standard input, and exit 1; a failed run prints no JSON | `every_json_output_path_has_schema_version_one`, `json_error_paths_print_no_json_document_and_no_schema_version`, `console_examples_match_the_binary` | tested; the second test also passes without the change, because no error path ever printed JSON |
 | C16 | The advice line is text, names `put-retention-policy`, says not executed | `claim_c16_advice_is_not_executed` | tested |

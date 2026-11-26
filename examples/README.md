@@ -5,14 +5,14 @@
 ## Text report
 
 ```sh
-cwlogs-retentie --as-of 2026-11-09 examples/describe-log-groups.json
+cwlogs-retention --as-of 2026-11-09 examples/describe-log-groups.json
 ```
 
 Expected output: `examples/describe-log-groups.expected.txt`
 
 Expected exit code: 0
 
-`--as-of` fixes the date the ages are measured to, so the output is the same on every day. Without it the savings columns are left out. The price data is dated 2026-11-09; on a later day the run adds a `warning: price data dated ...` line on standard error once it is older than 180 days, and the exit code stays 0. The tests set `CWLOGS_RETENTIE_TODAY=2026-11-20` so that no warning appears.
+`--as-of` fixes the date the ages are measured to, so the output is the same on every day. Without it the savings columns are left out. The price data is dated 2026-11-09; on a later day the run adds a `warning: price data dated ...` line on standard error once it is older than 180 days, and the exit code stays 0. The tests set `CWLOGS_RETENTION_TODAY=2026-11-20` so that no warning appears.
 
 ## Markdown and JSON
 
