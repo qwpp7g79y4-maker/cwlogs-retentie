@@ -83,8 +83,6 @@ Changes made after 2026-11-15; the version number did not change.
 - Tests that need Unix paths, symlinks, FIFOs, or control characters in file names run only on Unix.
 - `.gitattributes` keeps `*.md` on LF endings.
 
-This version is not published and has no git tag.
-
 ## [0.1.0] - 2026-11-09
 
 ### Added
@@ -93,5 +91,3 @@ This version is not published and has no git tag.
 - Groups with no retention, and a steady-ingest savings figure at 30, 90, and 365 days. The report says this is not a forecast.
 - Built-in storage rates from the AWS CloudWatch pricing page, read on 2026-11-09, and a `--prices` file for another quote.
 - Text table and `--json`. `--fail-stored-bytes` exits 1 when an unretained group is above the threshold. The retention advice is text and is not executed.
-
-This version is not published and has no git tag.
