@@ -6,7 +6,7 @@ This commit changes documentation only; the measurements below apply to code com
 
 Suite: 229 passed, 0 ignored, 0 failed.
 
-Record of 2026-11-25, run on a clean worktree of commit 829cc6e64e1d1d8d90820d5ef77b7b8757cc359d (`829cc6e`), the last commit that changed code or tests. Later commits change documentation only. rustc 1.99.0, cargo 1.99.0, Linux x86_64 (glibc). Every result in the table below comes from this one run on one local machine. Version 1.0.0 has no git tag.
+Record of 2026-11-25, run on a clean worktree of commit 829cc6e64e1d1d8d90820d5ef77b7b8757cc359d (`829cc6e`), the last commit that changed code or tests. Later commits change documentation only. rustc 1.99.0, cargo 1.99.0, Linux x86_64 (glibc). Every result in the table below comes from this one run on one local machine.
 
 Only the four commands below were run in this measurement. Anything else in this file that is not in that table (per-target details beyond the counts, red checks, time and memory figures, closed standard output, known limits) is an earlier record and was not repeated here.
 

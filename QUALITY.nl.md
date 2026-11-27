@@ -8,7 +8,7 @@ Suite: 229 passed, 0 ignored, 0 failed.
 
 Dit is de Nederlandse samenvatting van `QUALITY.md`. De Engelse tekst is leidend. Alleen gemeten waarden staan hier. Lokale runs worden nooit als CI-uitslag gemeld.
 
-Gemeten op 2026-11-25 op een schone worktree van commit 829cc6e64e1d1d8d90820d5ef77b7b8757cc359d (`829cc6e`), de laatste commit die code of tests wijzigde; latere commits wijzigen alleen documentatie. rustc 1.99.0, cargo 1.99.0, Linux x86_64 (glibc). Elk resultaat in de tabel hieronder komt van deze ene run op één lokale machine. Versie 1.0.0 heeft geen git-tag.
+Gemeten op 2026-11-25 op een schone worktree van commit 829cc6e64e1d1d8d90820d5ef77b7b8757cc359d (`829cc6e`), de laatste commit die code of tests wijzigde; latere commits wijzigen alleen documentatie. rustc 1.99.0, cargo 1.99.0, Linux x86_64 (glibc). Elk resultaat in de tabel hieronder komt van deze ene run op één lokale machine.
 
 Alleen de vier commando's hieronder zijn in deze meting gedraaid. Wat verder in dit bestand staat en niet in die tabel (rode controles, tijd- en geheugencijfers, gesloten standaarduitvoer, bekende grenzen) is een eerder record en is hier niet herhaald.
 
