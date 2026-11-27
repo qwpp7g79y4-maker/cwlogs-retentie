@@ -6,7 +6,7 @@ This commit changes documentation only; the measurements below apply to code com
 
 Suite: 229 passed, 0 ignored, 0 failed.
 
-Record of 2026-11-25, run on a clean worktree of commit 829cc6e64e1d1d8d90820d5ef77b7b8757cc359d (`829cc6e`), the last commit that changed code or tests. Later commits change documentation only. rustc 1.99.0, cargo 1.99.0, Linux x86_64 (glibc). Every result in the table below comes from this one run on one local machine. Version 1.0.0 is not published and has no git tag.
+Record of 2026-11-25, run on a clean worktree of commit 829cc6e64e1d1d8d90820d5ef77b7b8757cc359d (`829cc6e`), the last commit that changed code or tests. Later commits change documentation only. rustc 1.99.0, cargo 1.99.0, Linux x86_64 (glibc). Every result in the table below comes from this one run on one local machine. Version 1.0.0 has no git tag.
 
 Only the four commands below were run in this measurement. Anything else in this file that is not in that table (per-target details beyond the counts, red checks, time and memory figures, closed standard output, known limits) is an earlier record and was not repeated here.
 
@@ -182,7 +182,7 @@ Every claim of `README.md`, with the test that proves it. Test names are from th
 | L8 | With `--json`, warnings go to standard error | `json_warnings_go_to_stderr_and_hide_the_token` | tested |
 | L9 | The savings figure is not a forecast; a shorter retention deletes logs | `limitations_name_behaviors_the_tests_cover` (checks the README words only) | gap: wording only |
 | L10 | The built-in rates are the 2026-11-09 us-east-1 examples | `builtin_matches_the_pricing_page` | tested against the bundled price file, not against the live page |
-| L11 | Not published, no git tag | `licenses_and_changelog_match_the_package` (the changelog says so only) | gap: the repository state is not tested |
+| L11 | No git tag | `licenses_and_changelog_match_the_package` (the changelog says so only) | gap: the repository state is not tested |
 | L12 | The test total and the counts per group in README and this file | `test_counts_in_the_readme_and_quality_match_the_sources` | tested (counts `#[test]` in the sources; passed counts per target are from the run above) |
 | L13 | Exit code 0 ok, 1 threshold, 2 input or usage error | `help_and_version_exit_0`, `usage_errors_exit_2`, `missing_file_exits_2`, `claim_c14_fail_stored_bytes_exit_1` | tested |
 | L14 | MIT OR Apache-2.0 | `licenses_and_changelog_match_the_package` | tested |

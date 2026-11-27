@@ -99,7 +99,7 @@ fn help_and_version_exit_0() {
     let (code, stdout, stderr) = run(&["--version"]);
     assert_eq!(code, 0);
     assert!(stderr.is_empty());
-    assert!(stdout.contains("cwlogs-retention 1.0.1"));
+    assert!(stdout.contains("cwlogs-retention 1.0.2"));
 }
 
 /// The commit of this tree as git reports it, or `None` when git cannot say.
@@ -122,8 +122,8 @@ fn tree_commit() -> Option<String> {
 fn version_has_the_commit_in_debug_builds_only() {
     let commit = tree_commit();
     let expected = match (&commit, cfg!(debug_assertions)) {
-        (Some(sha), true) => format!("cwlogs-retention 1.0.1 ({sha})\n"),
-        _ => "cwlogs-retention 1.0.1\n".to_string(),
+        (Some(sha), true) => format!("cwlogs-retention 1.0.2 ({sha})\n"),
+        _ => "cwlogs-retention 1.0.2\n".to_string(),
     };
     for flag in ["--version", "-V"] {
         let (code, stdout, stderr) = run(&[flag]);

@@ -24,7 +24,7 @@ cargo install --locked --path .
 cwlogs-retention --help
 ```
 
-Deze crate is niet gepubliceerd, dus er is geen `cargo install cwlogs-retention` vanaf crates.io. Binaire archieven voor Linux (glibc en musl), Windows en macOS worden door `.github/workflows/release.yml` gebouwd zodra een `v*`-tag wordt gepusht; er bestaat nog geen tag, dus er is nog geen archief om te downloaden. Elk archief zou de binary, de man-pagina, de README's, QUALITY, de licenties en de lijst met derde-partij-licenties bevatten.
+Van crates.io: `cargo install cwlogs-retention`. Binaire archieven voor Linux (glibc en musl), Windows en macOS worden door `.github/workflows/release.yml` gebouwd zodra een `v*`-tag wordt gepusht; er bestaat nog geen tag, dus er is nog geen archief om te downloaden. Elk archief zou de binary, de man-pagina, de README's, QUALITY, de licenties en de lijst met derde-partij-licenties bevatten.
 
 Ondersteunde systemen: Linux x86_64 is gebouwd en getest. De code compileert voor Windows en macOS, maar de tests zijn daar niet gedraaid (zie `QUALITY.nl.md`). Alleen op Unix werken de SIGINT-afhandeling en de controle op gesloten standaarduitvoer.
 
@@ -184,7 +184,7 @@ Hetzelfde rapport als JSON, met `--json`:
 $ cwlogs-retention --json --as-of 2026-11-09 examples/describe-log-groups.json
 {
   "schema_version": 1,
-  "version": "1.0.1",
+  "version": "1.0.2",
   "currency": "USD",
   "source": "https://aws.amazon.com/cloudwatch/pricing/",
   "date": "2026-11-09",
