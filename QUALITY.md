@@ -73,7 +73,7 @@ Red checks on a scratch copy outside the repository (kept outside, not part of t
 - Windows and macOS. No test was run on either system, and the `cargo check` and clippy runs for `x86_64-pc-windows-gnu` and `x86_64-apple-darwin` of the 2026-11-19 record were not repeated for this record (`build.rs` and the `--version` constant are new since then). Tests that need Unix paths, symlinks, FIFOs, or control characters in file names run only on Unix. Tests that need `/dev/full`, a closed descriptor, a file name that is not UTF-8, or an escape character in a file name run only on Linux.
 - The test suite on musl (see "Known limits").
 - `mandoc -Tlint` on the man page (not installed); `man -l man/cwlogs-retention.1` renders without a message.
-- `git tag` and `cargo publish`; nothing is published.
+- `git tag` and `cargo publish`.
 - The package job of the workflow. Its steps were run by hand as listed under "Commands".
 
 ## Closed and full standard output
@@ -128,7 +128,7 @@ No run panicked. The `| true` case with the report exited 2 in 40 of 40 repeats;
 ## Open points
 
 - Money formula: no open point. The amounts are exact; the test `money_precision_limits_are_as_documented` and the README section "Money precision" change together with any change of the formula.
-- There is no glibc check script and no fuzz directory. Nothing is published. What was not run is listed once, in "Not run".
+- There is no glibc check script and no fuzz directory. What was not run is listed once, in "Not run".
 - The `homepage` field in `Cargo.toml` names the author's website. It has to be confirmed before a release.
 - The claim table below is checked only for form (`quality_claims_table_names_a_test_for_every_claim`): each of C1 to C24 has a row whose first test exists. That the test proves the whole claim is read by hand.
 

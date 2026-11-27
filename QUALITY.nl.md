@@ -94,7 +94,7 @@ De overige rijen (L5 tot L22, D1, S1, M1) staan in `QUALITY.md`.
 - Windows en macOS: er is geen test gedraaid, en de `cargo check`- en clippy-runs voor `x86_64-pc-windows-gnu` en `x86_64-apple-darwin` uit het record van 2026-11-19 zijn voor dit record niet herhaald (`build.rs` en de `--version`-constante zijn sindsdien nieuw).
 - De testsuite op musl.
 - Een fuzz-campagne en een mutatierun.
-- `git tag` en `cargo publish`: er is niets gepubliceerd.
+- `git tag` en `cargo publish`.
 
 ## Bekende grenzen
 
